@@ -1,75 +1,98 @@
 package com.redhat.cajun.navy.mission;
 
-import java.util.Objects;
 
-import io.vertx.core.Future;
-import io.vertx.ext.web.Router;
+import com.redhat.cajun.navy.mission.http.MissionRestVerticle;
+import com.redhat.cajun.navy.mission.message.MissionConsumerVerticle;
+import com.redhat.cajun.navy.mission.message.MissionProducerVerticle;
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.ext.web.handler.BodyHandler;
-
-import io.vertx.ext.web.handler.StaticHandler;
-import rx.Observable;
+import io.vertx.core.Future;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.CompositeFuture;
+import io.vertx.core.json.JsonObject;
 
 
 public class MissionMain extends AbstractVerticle {
-
-
     @Override
     public void start(final Future<Void> future) {
-        // Create Router
-        Router router = createRouter();
 
-        Observable.from(getRouterConsumers())
-                .filter(Objects::nonNull)
-                .flatMapCompletable(r -> {
-                    r.accept(router);
-                    return r.start();
-                })
-                .toCompletable()
-                .doOnCompleted(future::complete)
-                .doOnError(future::fail)
-                .subscribe(() ->
-                        vertx
-                                .createHttpServer()
-                                .requestHandler(router::accept)
-                                .listen(
-                                        // Retrieve the port from the configuration,
-                                        // default to 8080.
-                                        config().getInteger("http.port", 8080),
-                                        result -> {
-                                            if (result.succeeded()) {
-                                                future.complete();
-                                            } else {
-                                                future.fail(result.cause());
-                                            }
-                                        }
-                                ));
-
-    }
-
-    private Router createRouter() {
-        // Create a router object.
-        Router router = Router.router(vertx);
-        // enable parsing of request bodies
-        router.route().handler(BodyHandler.create());
-
-        // health check
-        router.get("/health").handler(rc -> rc.response().end("OK"));
-
-        // web interface
-        router.get().handler(StaticHandler.create());
-
-
-        return router;
+        ConfigRetriever.create(vertx, selectConfigOptions())
+                .getConfig(ar -> {
+                    if (ar.succeeded()) {
+                        deployVerticles(ar.result(), future);
+                    } else {
+                        System.out.println("Failed to retrieve the configuration.");
+                        future.fail(ar.cause());
+                    }
+                });
     }
 
 
-    private RouterConsumer[] getRouterConsumers() {
-        return new RouterConsumer[]{
-                new HttpStaticVerticle(vertx),
-                new MissionRestVerticle(vertx)
-        };
+    private ConfigRetrieverOptions selectConfigOptions(){
+
+        ConfigStoreOptions props = new ConfigStoreOptions()
+                .setType("file")
+                .setFormat("properties")
+                .setConfig(new JsonObject().put("path", "local-app-config.properties"));
+
+        ConfigStoreOptions appStore = new ConfigStoreOptions()
+                .setType("configmap")
+                .setFormat("yaml")
+                .setConfig(new JsonObject()
+                        .put("name", System.getenv("APP_CONFIGMAP_NAME"))
+                        .put("key", System.getenv("APP_CONFIGMAP_KEY")));
+
+        ConfigRetrieverOptions options = new ConfigRetrieverOptions();
+
+        if (System.getenv("KUBERNETES_NAMESPACE") != null) {
+            options.addStore(appStore);
+        } else {
+            System.out.println(config());
+            options.addStore(props);
+        }
+
+        return options;
     }
 
+
+    private void deployVerticles(JsonObject config, Future<Void> future){
+
+        Future<String> rFuture = Future.future();
+        Future<String> cFuture = Future.future();
+        Future<String> pFuture = Future.future();
+
+
+        DeploymentOptions options = new DeploymentOptions();
+
+        options.setConfig(config);
+        vertx.deployVerticle(new MissionRestVerticle(), options, rFuture.completer());
+        vertx.deployVerticle(new MissionConsumerVerticle(), options, cFuture.completer());
+        vertx.deployVerticle(new MissionProducerVerticle(), options, cFuture.completer());
+
+
+        CompositeFuture.all(rFuture, cFuture, pFuture).setHandler(ar -> {
+            if (ar.succeeded()) {
+                System.out.println("Verticles deployed successfully.");
+                future.complete();
+            } else {
+                System.out.println("WARNINIG: Verticles NOT deployed successfully.");
+                future.fail(ar.cause());
+            }
+        });
+
+    }
+
+
+
+
+    // Used for debugging in IDE
+    public static void main(String[] args) {
+        io.vertx.reactivex.core.Vertx vertx = io.vertx.reactivex.core.Vertx.vertx();
+
+        vertx.rxDeployVerticle(MissionMain.class.getName())
+                .subscribe();
+    }
 
 }

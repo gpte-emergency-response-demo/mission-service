@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: datagrid-service-monitor
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      metrics: datagrid
+  endpoints:
+      # Set the name of the port where Data Grid publishes metrics.
+      # You create this port in service-metrics.yaml.
+    - port: web

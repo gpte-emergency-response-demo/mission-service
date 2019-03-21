@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    description: Expose Data Grid metrics to Prometheus.
+  labels:
+    app: datagrid-service
+    application: datagrid-service
+    template: datagrid-service
+    metrics: datagrid
+  name: datagrid-app-metrics
+spec:
+  ClusterIP: None
+  ports:
+      # Set the port name where Data Grid publishes metrics.
+      # You add the port name to service-monitor.yaml.
+    - name: web
+      port: 8080
+      protocol: TCP
+      targetPort: 9779
+  selector:
+    deploymentConfig: datagrid-service
+  sessionAffinity: None

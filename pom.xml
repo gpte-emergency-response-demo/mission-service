@@ -8,7 +8,7 @@
   <name>Vert.x - HTTP</name>
   <description>Exposes an HTTP API using Vert.x</description>
   <properties>
-    <vertx.version>3.5.4.redhat-00002</vertx.version>
+    <vertx.version>3.6.3.redhat-00009</vertx.version>
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
     <vertx.verticle>com.redhat.cajun.navy.mission.MissionMain</vertx.verticle>
     <fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
@@ -17,6 +17,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.5</fabric8.generator.from>
+    <infinispan.version>9.3.0.Final</infinispan.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -46,11 +47,28 @@
       <artifactId>vertx-web</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-rx-java2</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-client-hotrod</artifactId>
+      <version>8.4.0.Final-redhat-2</version>
+    </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-health-check</artifactId>
     </dependency>
+
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-config</artifactId>
+    </dependency>
+
 
     <dependency>
       <groupId>io.vertx</groupId>
@@ -62,7 +80,6 @@
       <artifactId>vertx-kafka-client</artifactId>
       <version>3.6.3</version>
     </dependency>
-
 
     <!-- Testing -->
     <dependency>

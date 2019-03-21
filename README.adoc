@@ -1,52 +1,6 @@
-= REST API Level 0 - Eclipse Vert.x Booster
+Pre-requisites: Running Kafka Cluster, JDG Service, Configmap
 
-IMPORTANT: This booster requires Java 8 JDK or greater and Maven 3.3.x or greater.
-
-
-
-== Runing the Booster Locally
-
-To run this booster on your local host:
-
-[source,bash,options="nowrap",subs="attributes+"]
-----
-$ unzip mission-service.zip
-
-$ cd mission-service
-
-$ mvn compile vertx:run
-----
-
-== Interacting with the Booster Locally
-
-To interact with your booster while it's running locally, use the form at `http://localhost:8080` or the `curl` command:
-
-[source,bash,options="nowrap",subs="attributes+"]
-----
-$ curl http://localhost:8080/api/greeting
-{"content":"Hello, World!"}
-
-$ curl http://localhost:8080/api/greeting?name=Sarah
-{"content":"Hello, Sarah!"}
-----
-
-
-== Updating the Booster
-To update your booster:
-
-. Stop your booster.
-+
-NOTE: To stop your running booster in a Linux or macOS terminal, use `CTRL+C`. In a Windows command prompt, you can use `CTRL + Break(pause)`.
-
-. Make your change (e.g. edit `src/main/resources/webroot/index.html`).
-. Restart your booster.
-. Verify the change took effect.
-
-
-== Running the Booster on a Single-node OpenShift Cluster
-If you have a single-node OpenShift cluster, such as Minishift or Red Hat Container Development Kit, link:http://launcher.fabric8.io/docs/minishift-installation.html[installed and running], you can also deploy your booster there. A single-node OpenShift cluster provides you with access to a cloud environment that is similar to a production environment.
-
-To deploy your booster to a running single-node OpenShift cluster:
+To deploy the service to a running single-node OpenShift cluster:
 [source,bash,options="nowrap",subs="attributes+"]
 ----
 $ oc login -u developer -p developer

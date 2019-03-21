@@ -1,0 +1,264 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "Mission",
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/missions" : {
+      "summary" : "Path used to manage the list of missions.",
+      "description" : "The REST endpoint/path used to list and create zero or more `mission` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+      "get" : {
+        "summary" : "List All missions",
+        "description" : "Gets a list of all `mission` entities.",
+        "operationId" : "getmissions",
+        "responses" : {
+          "200" : {
+            "description" : "Successful response - returns an array of `mission` entities.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Mission"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Create a mission",
+        "description" : "Creates a new instance of a `mission`.",
+        "operationId" : "createmission",
+        "requestBody" : {
+          "description" : "A new `mission` to be created.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Mission"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful response."
+          }
+        }
+      }
+    },
+    "/missions/{missionId}" : {
+      "summary" : "Path used to manage a single mission.",
+      "description" : "The REST endpoint/path used to get, update, and delete single instances of an `mission`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+      "get" : {
+        "summary" : "Get a mission",
+        "description" : "Gets the details of a single instance of a `mission`.",
+        "operationId" : "getmission",
+        "responses" : {
+          "200" : {
+            "description" : "Successful response - returns a single `mission`.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Mission"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update a mission",
+        "description" : "Updates an existing `mission`.",
+        "operationId" : "updatemission",
+        "requestBody" : {
+          "description" : "Updated `mission` information.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Mission"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Successful response."
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a mission",
+        "description" : "Deletes an existing `mission`.",
+        "operationId" : "deletemission",
+        "responses" : {
+          "204" : {
+            "description" : "Successful response."
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "missionId",
+        "in" : "path",
+        "description" : "A unique identifier for a `mission`.",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/missions/{missionId}/updateResponderLocation" : {
+      "summary" : "Path used to update a Responder's location within a Mission.",
+      "post" : {
+        "summary" : "Add Responder's location to history",
+        "description" : "Path used to update a `Responder`'s location within a `Mission`.",
+        "operationId" : "updateresponderlocation",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Location"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : { },
+          "500" : {
+            "description" : "Returns an `Error`.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                },
+                "examples" : {
+                  "Example Error" : {
+                    "value" : {
+                      "code" : 1,
+                      "message" : "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "missionId",
+        "in" : "path",
+        "description" : "A unique identifier for a `mission`.",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Error" : {
+        "title" : "Root Type for Error",
+        "description" : "The root of the Error type's schema.",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\n    \"code\": 1,\n    \"message\": \"Error message\"\n}"
+      },
+      "Location" : {
+        "title" : "Root Type for location",
+        "description" : "Lat/Long and Timestamp fields",
+        "type" : "object",
+        "properties" : {
+          "lat" : {
+            "type" : "string"
+          },
+          "long" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "integer"
+          }
+        },
+        "example" : "{\n    \"lat\": \"34.16877\",\n    \"long\": \"-77.87045\",\n    \"timestamp\": 123455678\n}"
+      },
+      "Mission" : {
+        "title" : "Root Type for mission",
+        "description" : "The root of the mission type's schema.",
+        "required" : [ "destinationLat", "destinationLong", "incidentId", "incidentLat", "incidentLong", "responderId", "responderStartLat", "responderStartLong", "status" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "incidentId" : {
+            "type" : "string"
+          },
+          "responderId" : {
+            "type" : "string"
+          },
+          "responderStartLat" : {
+            "type" : "string"
+          },
+          "responderStartLong" : {
+            "type" : "string"
+          },
+          "incidentLat" : {
+            "type" : "string"
+          },
+          "incidentLong" : {
+            "type" : "string"
+          },
+          "destinationLat" : {
+            "type" : "string"
+          },
+          "destinationLong" : {
+            "type" : "string"
+          },
+          "responderLocationHistory" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Location"
+            }
+          },
+          "status" : {
+            "enum" : [ "REQUESTED", "ASSIGNED", "PICKED_UP", "CANCELLED", "DELIVERED" ]
+          }
+        },
+        "example" : {
+          "id" : "id",
+          "incidentId" : "incidentId",
+          "responderId" : "responderId",
+          "responderStartLat" : "34.16877",
+          "responderStartLong" : "-77.87045",
+          "incidentLat" : "34.16877",
+          "incidentLong" : "-77.87045",
+          "destinationLat" : "34.16877",
+          "destinationLong" : "-77.87045",
+          "responderLocationHistory" : [ {
+            "lat" : "34.16877",
+            "long" : "-77.87045",
+            "timestamp" : 12345678
+          }, {
+            "lat" : "34.16887",
+            "long" : "-77.87055",
+            "timestamp" : 12345678
+          } ],
+          "status" : "ENUM"
+        }
+      }
+    }
+  }
+}

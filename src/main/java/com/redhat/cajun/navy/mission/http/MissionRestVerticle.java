@@ -150,7 +150,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                         m = String.format("Mission id %s not found", id);
                         routingContext.response().setStatusCode(201);
                     } else {
-                        m = Json.encode(value);
+                        m = Json.encodePrettily(value);
                     }
                     routingContext.response().end(m);
                 });

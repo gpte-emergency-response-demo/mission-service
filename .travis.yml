@@ -1,8 +1,10 @@
 dist: trusty
 sudo: required
 language: java
-jdk:
-  - oraclejdk8
+
+deploy:
+  provider: script
+  script: mvn clean compile package
 
 services:
   - docker
@@ -14,9 +16,9 @@ install:
 
 script:
   - mvn clean compile package
-  - cd apb && docker build -t napsdemo/mission-service:$TRAVIS_COMMIT .
+  - docker build -t emergencyresponsedemo/missionservice:$TRAVIS_COMMIT .
 
 after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker tag napsdemo/mission-service:$TRAVIS_COMMIT quay.io/napsdemo/mission-service:$TAG
-  - docker push quay.io/napsdemo/mission-service:$TAG
+  - docker tag emergencyresponsedemo/missionservice:$TRAVIS_COMMIT quay.io/emergencyresponsedemo/missionservice:$TAG
+  - docker push quay.io/emergencyresponsedemo/missionservice:$TAG

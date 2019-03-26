@@ -1,6 +1,6 @@
 package com.redhat.cajun.navy.mission.message;
 
-import com.redhat.cajun.navy.mission.data.CreateMissionCommand;
+import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Mission;
 import com.redhat.cajun.navy.mission.http.MissionRestVerticle;
 import io.vertx.core.Future;
@@ -33,10 +33,13 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
         String action = message.headers().get("action");
         switch (action) {
             case "publish-update":
-                final Mission m = Json.decodeValue(String.valueOf(message.body()), CreateMissionCommand.class).getBody();
+                final Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
+
+                MissionCommand mc = new MissionCommand("MissionUpdatedCommand","MissionService", System.currentTimeMillis());
+                mc.setMission(m);
 
                 KafkaProducerRecord<String, String> record =
-                        KafkaProducerRecord.create(missionUpdateCommandTopic, m.toString());
+                        KafkaProducerRecord.create(missionUpdateCommandTopic, mc.toString());
 
                 producer.write(record, done -> {
 

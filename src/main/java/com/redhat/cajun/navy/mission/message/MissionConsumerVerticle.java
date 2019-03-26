@@ -27,7 +27,7 @@ public class MissionConsumerVerticle extends MissionMessageVerticle {
 
         consumer.subscribe(createMissionCommandTopic, ar -> {
             if (ar.succeeded()) {
-                System.out.println("subscribed to CreateMissionCommand");
+                System.out.println("subscribed to MissionCommand");
             } else {
                 System.out.println("Could not subscribe " + ar.cause().getMessage());
             }

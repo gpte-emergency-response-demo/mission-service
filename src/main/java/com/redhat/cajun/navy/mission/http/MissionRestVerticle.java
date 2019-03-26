@@ -3,7 +3,7 @@ package com.redhat.cajun.navy.mission.http;
 
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
-import com.redhat.cajun.navy.mission.data.CreateMissionCommand;
+import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Mission;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
@@ -112,7 +112,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         String action = message.headers().get("action");
         switch (action) {
             case "CREATE_ENTRY":
-                final Mission m = Json.decodeValue(String.valueOf(message.body()), CreateMissionCommand.class).getBody();
+                final Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
                 defaultCache.putAsync(m.getId(), m.toString())
                         .whenComplete((s, t) -> {
                             if (t == null) {

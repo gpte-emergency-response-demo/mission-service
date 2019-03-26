@@ -1,15 +1,10 @@
 package com.redhat.cajun.navy.mission.cache;
 
 import io.vertx.core.AbstractVerticle;
-import org.infinispan.client.hotrod.RemoteCache;
-
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.ClientIntelligence;
-import org.infinispan.client.hotrod.configuration.Configuration;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-
-
 import io.vertx.core.Future;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
 public abstract class CacheAccessVerticle extends AbstractVerticle {
 
@@ -19,18 +14,22 @@ public abstract class CacheAccessVerticle extends AbstractVerticle {
     protected abstract void init(Future<Void> startFuture);
 
     @Override
-    public void start(Future<Void> startFuture) throws Exception {
+    public void start(Future<Void> startFuture) {
+
+
         vertx.<RemoteCache<String, String>>executeBlocking(fut -> {
-            Configuration configuration = new ConfigurationBuilder().addServer()
-                    .host(config().getString("jdg.host", "localhost"))
-                    .port(config().getInteger("jdg.port", 11222))
-                    .clientIntelligence(ClientIntelligence.BASIC)
-                    .build();
-            client = new RemoteCacheManager(
-                    configuration);
+
+            ConfigurationBuilder cfg =
+                    ClientConfiguration.create(config().getString("jdg.svc.name"),
+                            config().getString("jdg.app.name"),
+                            config().getString("jdg.app.user.name"),
+                            config().getString("jdg.app.user.password"));
+
+            client = new RemoteCacheManager(cfg.build());
 
             RemoteCache<String, String> cache = client.getCache();
             fut.complete(cache);
+
         }, res -> {
             if (res.succeeded()) {
                 System.out.println("Cache connection successfully done");

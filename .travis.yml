@@ -1,0 +1,22 @@
+dist: trusty
+sudo: required
+language: java
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
+
+before_install:
+  - docker login -u=$DOCKER_USER -p=$DOCKER_PASS quay.io
+
+install:
+
+script:
+  - mvn clean compile package
+  - cd apb && docker build -t napsdemo/mission-service:$TRAVIS_COMMIT .
+
+after_success:
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker tag napsdemo/mission-service:$TRAVIS_COMMIT quay.io/napsdemo/mission-service:$TAG
+  - docker push quay.io/napsdemo/mission-service:$TAG

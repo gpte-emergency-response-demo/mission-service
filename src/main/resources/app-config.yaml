@@ -1,7 +1,0 @@
-kafka.connect: localhost:9092
-kafka.sub: MissionCreateCommand
-kafka.pub: MissionUpdatedCommand
-jdg.host: localhost
-jdg.port: 11222
-http.host: localhost
-http.port: 8080

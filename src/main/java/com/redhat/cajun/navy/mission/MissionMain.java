@@ -8,9 +8,9 @@ import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
-import io.vertx.core.DeploymentOptions;
 import io.vertx.core.CompositeFuture;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 
 
@@ -31,24 +31,22 @@ public class MissionMain extends AbstractVerticle {
 
 
     private ConfigRetrieverOptions selectConfigOptions(){
-
-        ConfigStoreOptions props = new ConfigStoreOptions()
-                .setType("file")
-                .setFormat("properties")
-                .setConfig(new JsonObject().put("path", "local-app-config.properties"));
-
-        ConfigStoreOptions appStore = new ConfigStoreOptions()
-                .setType("configmap")
-                .setFormat("yaml")
-                .setConfig(new JsonObject()
-                        .put("name", System.getenv("APP_CONFIGMAP_NAME"))
-                        .put("key", System.getenv("APP_CONFIGMAP_KEY")));
-
         ConfigRetrieverOptions options = new ConfigRetrieverOptions();
 
         if (System.getenv("KUBERNETES_NAMESPACE") != null) {
+            ConfigStoreOptions appStore = new ConfigStoreOptions()
+                    .setType("file")
+                    .setFormat("properties")
+                    .setConfig(new JsonObject()
+                            .put("name", System.getenv("APP_CONFIGMAP_NAME"))
+                            .put("key", System.getenv("APP_CONFIGMAP_KEY"))
+                            .put("path", "/deployments/config/app-config.properties"));
             options.addStore(appStore);
         } else {
+            ConfigStoreOptions props = new ConfigStoreOptions()
+                    .setType("file")
+                    .setFormat("properties")
+                    .setConfig(new JsonObject().put("path", "local-app-config.properties"));
             System.out.println(config());
             options.addStore(props);
         }

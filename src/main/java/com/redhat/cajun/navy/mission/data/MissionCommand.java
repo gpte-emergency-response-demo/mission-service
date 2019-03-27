@@ -16,7 +16,7 @@ public class MissionCommand {
     // Getter Methods
 
 
-    public MissionCommand(String messageType, String invokingService, long timestamp){
+    public void createMissionCommandHeaders(String messageType, String invokingService, long timestamp) {
         this.id = UUID.randomUUID().toString();
         this.messageType = messageType;
         this.invokingService = invokingService;

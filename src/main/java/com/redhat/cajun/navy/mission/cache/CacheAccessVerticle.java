@@ -23,7 +23,7 @@ public abstract class CacheAccessVerticle extends AbstractVerticle {
             ConfigurationBuilder cfg = null;
             if (System.getenv("KUBERNETES_NAMESPACE") != null) {
 
-                ClientConfiguration.create(config().getString("jdg.svc.name"),
+                cfg = ClientConfiguration.create(config().getString("jdg.svc.name"),
                         config().getString("jdg.app.name"),
                         config().getString("jdg.app.user.name"),
                         config().getString("jdg.app.user.password"));

@@ -14,6 +14,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
+import java.net.HttpURLConnection;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -142,17 +143,24 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     private void missionById(RoutingContext routingContext) {
 
         String id = routingContext.request().getParam("id");
-        logger.info("Get by id called id=" + id);
+        logger.info("missionById: id=" + id);
+
         defaultCache.getAsync(routingContext.request().getParam("id"))
                 .thenAccept(value -> {
-                    String m;
+                    int responseCode = HttpURLConnection.HTTP_CREATED;
                     if (value == null) {
-                        m = String.format("Mission id %s not found", id);
-                        routingContext.response().setStatusCode(201);
+                        responseCode = HttpURLConnection.HTTP_NO_CONTENT;
+                        String.format("Mission id %s not found", id);
+                        routingContext.response()
+                                .setStatusCode(responseCode)
+                                .end("Response:"+HttpURLConnection.HTTP_NO_CONTENT);
                     } else {
-                        m = Json.encodePrettily(value);
+                        Mission m = Json.decodeValue(value, Mission.class);
+                        routingContext.response()
+                                .setStatusCode(responseCode)
+                                .putHeader("content-type", "application/json; charset=utf-8")
+                                .end(Json.encodePrettily(m));
                     }
-                    routingContext.response().end(m);
                 });
 
     }

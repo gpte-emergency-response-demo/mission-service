@@ -36,4 +36,28 @@ jdg.app.user.password=demo
 http.host=localhost
 http.port=8080
    ```
+   
+   
+   
+Installing Datagrid-service and configmap
+You might want to import the streams if already not done
+ ```
+for resource in cache-service-template.yaml \ 
+datagrid-service-template.yaml do oc create -n openshift -f \ 
+https://raw.githubusercontent.com/jboss-container-images/jboss-datagrid-7-openshift-image/7.3-v1.0/services/${resource} done
+ ```
+
+
+in the scripts directory createResources.sh does the same as follows, which will create the data-grid service and also create a configmap for the app.
+ ```
+   oc new-app datagrid-service -p APPLICATION_USER=demo -p APPLICATION_PASSWORD=demo -p NUMBER_OF_INSTANCES=3 -e AB_PROMETHEUS_ENABLE=true
+   oc expose svc/datagrid-service-ping
+   oc expose svc/datagrid-service
+   
+   oc create -f configmap.yml
+   
+   ```
+   
+Finally run the following
+mvn clean fabric8:deploy -Popenshift   
 

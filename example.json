@@ -1,16 +1,1 @@
-{
-  "id": "6932de7b-8435-4ded-8f32-c3e5b704998c",
-  "messageType": "CreateMissionCommand",
-  "invokingService": "ProcessService",
-  "timestamp": 1552899692390,
-  "body": {
-    "incidentId": "98965816-e6eb-4edc-9b85-9a6b6ca474b3",
-    "responderId": "responderId",
-    "responderStartLat": "31.12345",
-    "responderStartLong": "-71.98765",
-    "incidentLat": "30.12345",
-    "incidentLong": "-70.98765",
-    "destinationLat": "32.12345",
-    "destinationLong": "-72.98765"
-  }
-}
+{"id": "6932de7b-8435-4ded-8f32-c3e5b704998c", "messageType": "CreateMissionCommand", "invokingService": "ProcessService", "timestamp": 1552899692390, "body": { "incidentId": "98965816-e6eb-4edc-9b85-9a6b6ca474b3",    "responderId": "responderId",    "responderStartLat": "31.12345",    "responderStartLong": "-71.98765",    "incidentLat": "30.12345",    "incidentLong": "-70.98765",    "destinationLat": "32.12345",    "destinationLong": "-72.98765" }}

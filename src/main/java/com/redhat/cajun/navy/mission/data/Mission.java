@@ -1,28 +1,28 @@
 package com.redhat.cajun.navy.mission.data;
 
 import io.vertx.core.json.Json;
-
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 
 public class Mission {
     private String id;
     private String incidentId;
     private String responderId;
-    private BigDecimal responderStartLat;
-    private BigDecimal responderStartLong;
-    private BigDecimal incidentLat;
-    private BigDecimal incidentLong;
-    private BigDecimal destinationLat;
-    private BigDecimal destinationLong;
+    private double responderStartLat;
+    private double responderStartLong;
+    private double incidentLat;
+    private double incidentLong;
+    private double destinationLat;
+    private double destinationLong;
     private List<ResponderLocationHistory> responderLocationHistory;
     private String status;
 
+    private MissionRoute route = null;
 
-    public Mission() {
+    public Mission(){
+        id = UUID.randomUUID().toString();
     }
-
 
     public String getId() {
         return id;
@@ -48,51 +48,51 @@ public class Mission {
         this.responderId = input;
     }
 
-    public BigDecimal getResponderStartLat() {
+    public double getResponderStartLat() {
         return responderStartLat;
     }
 
-    public void setResponderStartLat(BigDecimal input) {
+    public void setResponderStartLat(double input) {
         this.responderStartLat = input;
     }
 
-    public BigDecimal getResponderStartLong() {
+    public double getResponderStartLong() {
         return responderStartLong;
     }
 
-    public void setResponderStartLong(BigDecimal input) {
+    public void setResponderStartLong(double input) {
         this.responderStartLong = input;
     }
 
-    public BigDecimal getIncidentLat() {
+    public double getIncidentLat() {
         return incidentLat;
     }
 
-    public void setIncidentLat(BigDecimal input) {
+    public void setIncidentLat(double input) {
         this.incidentLat = input;
     }
 
-    public BigDecimal getIncidentLong() {
+    public double getIncidentLong() {
         return incidentLong;
     }
 
-    public void setIncidentLong(BigDecimal input) {
+    public void setIncidentLong(double input) {
         this.incidentLong = input;
     }
 
-    public BigDecimal getDestinationLat() {
+    public double getDestinationLat() {
         return destinationLat;
     }
 
-    public void setDestinationLat(BigDecimal input) {
+    public void setDestinationLat(double input) {
         this.destinationLat = input;
     }
 
-    public BigDecimal getDestinationLong() {
+    public double getDestinationLong() {
         return destinationLong;
     }
 
-    public void setDestinationLong(BigDecimal input) {
+    public void setDestinationLong(double input) {
         this.destinationLong = input;
     }
 
@@ -112,8 +112,21 @@ public class Mission {
         this.status = input;
     }
 
+
+    public MissionRoute getRoute() {
+        return route;
+    }
+
+    public void setRoute(MissionRoute route) {
+        this.route = route;
+    }
+
+    public String toJson() {
+        return Json.encode(this);
+    }
+
     @Override
     public String toString() {
-        return Json.encode(this);
+        return toJson();
     }
 }

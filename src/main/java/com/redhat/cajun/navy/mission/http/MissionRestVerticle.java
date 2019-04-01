@@ -3,8 +3,11 @@ package com.redhat.cajun.navy.mission.http;
 
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
+import com.redhat.cajun.navy.mission.data.Location;
 import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Mission;
+import com.redhat.cajun.navy.mission.data.MissionRoute;
+import com.redhat.cajun.navy.mission.map.RoutePlanner;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
@@ -31,10 +34,17 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     public static final String PUB_QUEUE = "pub.queue";
 
+    private static final String MAPBOX_ACCESS_TOKEN_KEY = "map.token";
+
+    private String MAPBOX_ACCESS_TOKEN = null;
+
     @Override
     protected void init(Future<Void> startFuture) {
         String host = config().getString("http.host");
         int port = config().getInteger("http.port");
+        MAPBOX_ACCESS_TOKEN = config().getString("map.token");
+
+
         Router router = Router.router(vertx);
 
         router.get("/").handler(rc -> {
@@ -62,21 +72,27 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     private void addMission(RoutingContext routingContext) {
         try {
             boolean prepareMessage = false;
-            Mission mission = Json.decodeValue(routingContext.getBodyAsString(), Mission.class);
-            if(mission.getId() == null){
-                mission.setId(UUID.randomUUID().toString());
+            Mission m = Json.decodeValue(routingContext.getBodyAsString(), Mission.class);
+            if(m.getId() == null){
+                m.setId(UUID.randomUUID().toString());
+                MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
+                        new Location(m.getResponderStartLat(), m.getResponderStartLong()),
+                        new Location(m.getDestinationLat(), m.getDestinationLong()),
+                        new Location(m.getIncidentLat(), m.getIncidentLong()));
+
+                m.setRoute(mRoute);
             }
             else{
                 prepareMessage = true;
             }
-            logger.log(Level.INFO,"putting.. " + mission.getId() + "\n " + mission);
-            defaultCache.putAsync(mission.getId(), mission.toString())
+            logger.log(Level.INFO,"putting.. " + m.getId() + "\n " + m);
+            defaultCache.putAsync(m.getId(), m.toString())
                     .whenComplete((s, t) -> {
                         if (t == null) {
                             routingContext.response()
                                     .setStatusCode(201)
                                     .putHeader("content-type", "application/json; charset=utf-8")
-                                    .end(Json.encodePrettily(mission));
+                                    .end(Json.encodePrettily(m));
                         } else {
                             routingContext.fail(500);
                         }
@@ -84,7 +100,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
             if(prepareMessage){
                 DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
-                vertx.eventBus().send(PUB_QUEUE, mission.toString(), options, reply -> {
+                vertx.eventBus().send(PUB_QUEUE, m.toString(), options, reply -> {
                     if (reply.succeeded()) {
                         System.out.println("Message publish request accepted");
                     } else {
@@ -113,15 +129,24 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         String action = message.headers().get("action");
         switch (action) {
             case "CREATE_ENTRY":
-                final Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
+                Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
+                MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
+                        new Location(m.getResponderStartLat(), m.getResponderStartLong()),
+                        new Location(m.getDestinationLat(), m.getDestinationLong()),
+                        new Location(m.getIncidentLat(), m.getIncidentLong()));
+
+                m.setRoute(mRoute);
+
                 defaultCache.putAsync(m.getId(), m.toString())
                         .whenComplete((s, t) -> {
                             if (t == null) {
                                 message.reply(m.toString());
+                                System.out.println(m.toString());
                             } else {
-
+                                System.out.println(m.toString());
                             }
                         });
+
                 break;
 
             default:
@@ -144,6 +169,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         String id = routingContext.request().getParam("id");
         logger.info("missionById: id=" + id);
+
 
         defaultCache.getAsync(routingContext.request().getParam("id"))
                 .thenAccept(value -> {

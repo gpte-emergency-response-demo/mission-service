@@ -7,4 +7,4 @@
 curl --header "Content-Type: application/json" \
   --request PUT \
   --data @temp.json \
-  http://mission-service-mission-service.apps.copenhagen-62bc.openshiftworkshop.com/api/missions
+  http://localhost:8080/api/missions

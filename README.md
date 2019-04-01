@@ -42,9 +42,7 @@ http.port=8080
 Installing Datagrid-service and configmap
 You might want to import the streams if already not done
  ```
-for resource in cache-service-template.yaml \ 
-datagrid-service-template.yaml do oc create -n openshift -f \ 
-https://raw.githubusercontent.com/jboss-container-images/jboss-datagrid-7-openshift-image/7.3-v1.0/services/${resource} done
+for resource in cache-service-template.yaml datagrid-service-template.yaml do oc create -n openshift -f https://raw.githubusercontent.com/jboss-container-images/jboss-datagrid-7-openshift-image/7.3-v1.0/services/${resource} done
  ```
 
 

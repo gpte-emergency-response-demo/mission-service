@@ -81,6 +81,13 @@
       <version>3.6.3</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.mapbox.mapboxsdk</groupId>
+      <artifactId>mapbox-sdk-services</artifactId>
+      <version>4.5.0</version>
+    </dependency>
+
+
     <!-- Testing -->
     <dependency>
       <groupId>io.vertx</groupId>

@@ -19,8 +19,6 @@ import io.vertx.ext.web.handler.BodyHandler;
 
 import java.net.HttpURLConnection;
 import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -56,7 +54,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
-        // router.put(MISSIONS_EP).handler(this::addMission);
         router.get(MISSIONS_EP + "/:id").handler(this::missionById);
         vertx.createHttpServer()
                 .requestHandler(router::accept)
@@ -67,51 +64,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                         startFuture.fail(ar.cause());
                     }
                 });
-    }
-
-    private void addMission(RoutingContext routingContext) {
-        try {
-            boolean prepareMessage = false;
-            Mission m = Json.decodeValue(routingContext.getBodyAsString(), Mission.class);
-            if(m.getId() == null){
-                m.setId(UUID.randomUUID().toString());
-                MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
-                        new Location(m.getResponderStartLat(), m.getResponderStartLong()),
-                        new Location(m.getDestinationLat(), m.getDestinationLong()),
-                        new Location(m.getIncidentLat(), m.getIncidentLong()));
-
-                m.setRoute(mRoute);
-            }
-            else{
-                prepareMessage = true;
-            }
-            logger.log(Level.INFO,"putting.. " + m.getId() + "\n " + m);
-            defaultCache.putAsync(m.getId(), m.toString())
-                    .whenComplete((s, t) -> {
-                        if (t == null) {
-                            routingContext.response()
-                                    .setStatusCode(201)
-                                    .putHeader("content-type", "application/json; charset=utf-8")
-                                    .end(Json.encodePrettily(m));
-                        } else {
-                            routingContext.fail(500);
-                        }
-                    });
-
-            if(prepareMessage){
-                DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
-                vertx.eventBus().send(PUB_QUEUE, m.toString(), options, reply -> {
-                    if (reply.succeeded()) {
-                        System.out.println("Message publish request accepted");
-                    } else {
-                        System.out.println("Message publish request not accepted");
-                    }
-                });
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public enum ErrorCodes {

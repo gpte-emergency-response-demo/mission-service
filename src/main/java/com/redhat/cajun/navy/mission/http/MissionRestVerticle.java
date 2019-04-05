@@ -71,6 +71,25 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         BAD_ACTION
     }
 
+    public enum MissionEvents {
+        CREATED("CREATED"),
+        UPDATED("UPDATED"),
+        COMPLETED("COMPLETED"),
+        FAILED("FAILED");
+
+
+        private String actionType;
+
+        MissionEvents(String actionType) {
+            this.actionType = actionType;
+        }
+
+        public String getActionType() {
+            return actionType;
+        }
+
+    }
+
     public void onMessage(Message<JsonObject> message) {
 
         if (!message.headers().contains("action")) {
@@ -82,7 +101,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         switch (action) {
             case "CREATE_ENTRY":
                 Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
-                m.setStatus("CREATED");
+                m.setStatus(MissionEvents.CREATED.getActionType());
                 MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
                         new Location(m.getResponderStartLat(), m.getResponderStartLong()),
                         new Location(m.getDestinationLat(), m.getDestinationLong()),
@@ -99,23 +118,15 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                                 System.out.println(m.toString());
                             }
                         });
+                sendUpdate(m);
 
+                break;
 
-                // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
-                MissionCommand mc = new MissionCommand();
-                mc.createMissionCommandHeaders("MissionCreatedEvent", "MissionService", System.currentTimeMillis());
-                mc.setMission(m);
-
-                DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
-                vertx.eventBus().send(PUB_QUEUE, mc.toString(), options, reply -> {
-                    if (reply.succeeded()) {
-                        System.out.println("Message publish request accepted");
-                    } else {
-                        System.out.println("Message publish request not accepted");
-                    }
-                });
-
-
+            case "UPDATE_ENTRY":
+                // INCOMPLETE IMPLEMENTATION
+                Mission mission = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
+                mission.setStatus(MissionEvents.UPDATED.getActionType());
+                sendUpdate(mission);
                 break;
 
             default:
@@ -123,6 +134,25 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         }
     }
+
+
+    private void sendUpdate(Mission m) {
+        // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
+        MissionCommand mc = new MissionCommand();
+        mc.createMissionCommandHeaders(m.getStatus(), "MissionService", System.currentTimeMillis());
+        mc.setMission(m);
+
+        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
+        vertx.eventBus().send(PUB_QUEUE, mc.toString(), options, reply -> {
+            if (reply.succeeded()) {
+                System.out.println("Message publish request accepted");
+            } else {
+                System.out.println("Message publish request not accepted");
+            }
+        });
+
+    }
+
 
     private void getAll(RoutingContext routingContext) {
 // THIS METHOD IS INCOMPLETE

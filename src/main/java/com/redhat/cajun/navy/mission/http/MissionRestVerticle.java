@@ -4,8 +4,8 @@ package com.redhat.cajun.navy.mission.http;
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
 import com.redhat.cajun.navy.mission.data.Location;
-import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Mission;
+import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.MissionRoute;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
 import io.vertx.core.Future;
@@ -56,7 +56,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
-        router.put(MISSIONS_EP).handler(this::addMission);
+        // router.put(MISSIONS_EP).handler(this::addMission);
         router.get(MISSIONS_EP + "/:id").handler(this::missionById);
         vertx.createHttpServer()
                 .requestHandler(router::accept)
@@ -130,6 +130,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         switch (action) {
             case "CREATE_ENTRY":
                 Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
+                m.setStatus("CREATED");
                 MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
                         new Location(m.getResponderStartLat(), m.getResponderStartLong()),
                         new Location(m.getDestinationLat(), m.getDestinationLong()),
@@ -146,6 +147,22 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                                 System.out.println(m.toString());
                             }
                         });
+
+
+                // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
+                MissionCommand mc = new MissionCommand();
+                mc.createMissionCommandHeaders("MissionCreatedEvent", "MissionService", System.currentTimeMillis());
+                mc.setMission(m);
+
+                DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
+                vertx.eventBus().send(PUB_QUEUE, mc.toString(), options, reply -> {
+                    if (reply.succeeded()) {
+                        System.out.println("Message publish request accepted");
+                    } else {
+                        System.out.println("Message publish request not accepted");
+                    }
+                });
+
 
                 break;
 

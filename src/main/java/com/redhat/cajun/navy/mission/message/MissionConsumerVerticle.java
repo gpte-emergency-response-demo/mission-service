@@ -7,8 +7,6 @@ import io.vertx.kafka.client.consumer.KafkaConsumer;
 
 public class MissionConsumerVerticle extends MissionMessageVerticle {
 
-
-
     @Override
     public void init(Future<Void> startFuture) throws Exception {
 
@@ -16,6 +14,7 @@ public class MissionConsumerVerticle extends MissionMessageVerticle {
 
         consumer.handler(record -> {
             DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.CREATE_ENTRY.toString());
+            System.out.println(record.value());
             vertx.eventBus().send(CACHE_QUEUE, record.value(), options, reply -> {
                 if (reply.succeeded()) {
                     System.out.println("Message accepted");

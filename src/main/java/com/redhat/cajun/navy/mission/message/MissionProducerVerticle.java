@@ -17,13 +17,14 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
     public void init(Future<Void> startFuture) throws Exception {
 
         producer = KafkaProducer.create(vertx,config);
-
+        vertx.eventBus().consumer(config().getString(PUB_QUEUE, "pub.queue"), this::onMessage);
 
     }
 
 
     protected MissionCommand getMissionCommand(String message) {
 
+        System.out.println(message);
         Mission m = Json.decodeValue(message, MissionCommand.class).getBody();
         MissionCommand mc = new MissionCommand();
 
@@ -44,7 +45,7 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
 
         String action = message.headers().get("action");
         switch (action) {
-            case "publish-update":
+            case "PUBLISH_UPDATE":
 
                 KafkaProducerRecord<String, String> record =
                         KafkaProducerRecord.create(missionUpdateCommandTopic, getMissionCommand(String.valueOf(message.body())).toString());

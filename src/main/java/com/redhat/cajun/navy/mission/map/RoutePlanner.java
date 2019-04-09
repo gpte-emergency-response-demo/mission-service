@@ -32,42 +32,47 @@ public class RoutePlanner {
                 .origin(Point.fromLngLat(origin.getLong(), origin.getLat()))
                 .destination(Point.fromLngLat(destination.getLong(), destination.getLat()))
                 .addWaypoint(Point.fromLngLat(waypoint.getLong(), waypoint.getLat()))
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
                 .profile(DirectionsCriteria.PROFILE_DRIVING)
                 .steps(true)
                 .build();
-
-
 
         MissionRoute mRoute = new MissionRoute();
         try {
 
             Response<DirectionsResponse> response = request.executeCall();
 
-            if(response.body().routes().size() > 0){
-            DirectionsRoute route = response.body().routes().get(0);
+            if (response.body() == null) {
+                System.err.println("No routes found check access token, rights and coordinates");
+            } else if (response.body().routes().size() < 1) {
+                System.err.println("No routes found!");
+            } else {
+
+                if (response.body().routes().size() > 0) {
+                    DirectionsRoute route = response.body().routes().get(0);
 
 
-            mRoute.setDistance(route.distance());
-            mRoute.setDuration(route.duration());
-            List<RouteLeg> legs = route.legs();
+                    mRoute.setDistance(route.distance());
+                    mRoute.setDuration(route.duration());
+                    List<RouteLeg> legs = route.legs();
 
-                Observable.from(legs).map(l -> {
-                    List<LegStep> steps = l.steps();
-                    Observable.from(steps).map(s -> {
-                        MissionStep step = new MissionStep(s.distance(), s.duration(), s.name(), s.maneuver().instruction(), s.weight(), s.maneuver().location());
-                        mRoute.addMissionStep(step);
-                        //System.out.println(step);
-                        return step;
+                    Observable.from(legs).map(l -> {
+                        List<LegStep> steps = l.steps();
+                        Observable.from(steps).map(s -> {
+                            MissionStep step = new MissionStep(s.distance(), s.duration(), s.name(), s.maneuver().instruction(), s.weight(), s.maneuver().location());
+                            mRoute.addMissionStep(step);
+                            //System.out.println(step);
+                            return step;
+                        }).subscribe();
+                        return steps;
                     }).subscribe();
-                    return steps;
-                }).subscribe();
+                }
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-       // System.out.println(mRoute);
+        // System.out.println(mRoute);
         return mRoute;
     }
 }

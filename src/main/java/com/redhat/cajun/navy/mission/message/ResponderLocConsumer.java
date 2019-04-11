@@ -5,7 +5,7 @@ import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 
-public class MissionConsumerVerticle extends MissionMessageVerticle {
+public class ResponderLocConsumer  extends MissionMessageVerticle {
 
     @Override
     public void init(Future<Void> startFuture) throws Exception {
@@ -13,18 +13,20 @@ public class MissionConsumerVerticle extends MissionMessageVerticle {
         consumer = KafkaConsumer.create(vertx, config);
 
         consumer.handler(record -> {
-            DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.CREATE_ENTRY.toString());
-            sendMessage(options, record.value());
+                DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.UPDATE_ENTRY.toString());
+                sendMessage(options, record.value());
+
         });
 
 
-        consumer.subscribe(createMissionCommandTopic,  ar -> {
+        consumer.subscribe(responderLoctationUpdateTopic, ar -> {
             if (ar.succeeded()) {
-                System.out.println("subscribed to MissionCommand");
+                System.out.println("subscribed to ResponderLocationUpdate");
             } else {
                 System.out.println("Could not subscribe " + ar.cause().getMessage());
             }
         });
+
     }
 
     private void sendMessage(DeliveryOptions options, String value){
@@ -48,4 +50,5 @@ public class MissionConsumerVerticle extends MissionMessageVerticle {
             }
         });
     }
+
 }

@@ -1,0 +1,2980 @@
+{
+  "routeIndex": "0",
+  "distance": 30002.800000000003,
+  "duration": 1775.1999999999998,
+  "geometry": "incyw@hq~kuDh~@yi_@roB{`E}xA}zIvlDwsA~f@orzGtcH{nSlwByvi@hqAhjFlkK{cDljC_tBtbEtqB~j@ugH|yBoeE_Aw}Iy|AgzE`fAozOixCgtLjkCgdU}rB{v^vnKurUnn@dc@ibAjX",
+  "weight": 2342.3,
+  "weight_name": "routability",
+  "legs": [
+    {
+      "distance": 21549.9,
+      "duration": 1090.3,
+      "summary": "Katy Freeway Frontage Road, Katy Freeway",
+      "steps": [
+        {
+          "distance": 2.6,
+          "duration": 5.5,
+          "geometry": "incyw@hq~kuD?t@",
+          "name": "Park Row",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.633189,
+              29.788405
+            ],
+            "bearing_before": 0.0,
+            "bearing_after": 270.0,
+            "instruction": "Head west on Park Row",
+            "type": "depart",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 37.7,
+          "intersections": [
+            {
+              "location": [
+                -95.633189,
+                29.788405
+              ],
+              "bearings": [
+                270
+              ],
+              "entry": [
+                true
+              ],
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 2960.9,
+          "duration": 200.9,
+          "geometry": "incyw@~r~kuD`HCJqX_@sf@EwEScWM{z@E}ZKaf@XsOz@gP^cGl@cHj@qFrDm[|CyQhFmW~I}f@|EkXjF{`@fAgc@b@ia@QgUqAaVyDkh@M{Cc@oIwAc[Msf@RwsAl@cb@~Beb@dFsg@nAqSlAy[?sP?q@O_FCkGc@{HIaS?yUd@cJt@aEz@{Et@eCjAwEzEoPHYjCgIdB{CvB{DbBsCx@uAnEaF`HwHdIuHdMiK^[dOaTrGsMnFaQzC}LlB_O\\oQO}PaAcP_AiIkCuM_K}XgCgFcB_EoGiNwGmLyHiPgE}ImB}D{EwJcCaG_AmCgBuFeB_Iw@uEcBaJu@aN[cQ@g\\BgHJq]NiDfAkLfAmI`CeJ~CwHPc@xCoEtE_G|EoEnGsDpFqD|GeCfOiAl_@I~G@fq@HfGG",
+          "name": "Park Row",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.633216,
+              29.788405
+            ],
+            "bearing_before": 268.0,
+            "bearing_after": 178.0,
+            "instruction": "Make a U-turn and continue on Park Row",
+            "type": "continue",
+            "modifier": "uturn"
+          },
+          "driving_side": "right",
+          "weight": 301.9,
+          "intersections": [
+            {
+              "location": [
+                -95.633216,
+                29.788405
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true
+              ],
+              "in": 0,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.633214,
+                29.78826
+              ],
+              "bearings": [
+                0,
+                90,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                false
+              ],
+              "in": 0,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.631677,
+                29.788283
+              ],
+              "bearings": [
+                0,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.630272,
+                29.788293
+              ],
+              "bearings": [
+                0,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.628975,
+                29.78824
+              ],
+              "bearings": [
+                15,
+                105,
+                195,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.628829,
+                29.788217
+              ],
+              "bearings": [
+                0,
+                105,
+                180,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.627561,
+                29.787909
+              ],
+              "bearings": [
+                15,
+                105,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.626516,
+                29.787622
+              ],
+              "bearings": [
+                15,
+                105,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.624489,
+                29.787459
+              ],
+              "bearings": [
+                0,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.622128,
+                29.787669
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.620772,
+                29.787659
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.617788,
+                29.787386
+              ],
+              "bearings": [
+                15,
+                90,
+                195,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.617654,
+                29.787388
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.616425,
+                29.787335
+              ],
+              "bearings": [
+                15,
+                120,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.615621,
+                29.786974
+              ],
+              "bearings": [
+                30,
+                135,
+                180,
+                240,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                true,
+                false
+              ],
+              "in": 4,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.614883,
+                29.786256
+              ],
+              "bearings": [
+                45,
+                135,
+                225,
+                330
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.611742,
+                29.785978
+              ],
+              "bearings": [
+                60,
+                240,
+                330
+              ],
+              "entry": [
+                true,
+                false,
+                true
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.610734,
+                29.786561
+              ],
+              "bearings": [
+                60,
+                150,
+                240,
+                330
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                true
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.608685,
+                29.787045
+              ],
+              "bearings": [
+                0,
+                90,
+                150,
+                225,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                true,
+                false
+              ],
+              "in": 4,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.606605,
+                29.785329
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                false,
+                false,
+                true,
+                true
+              ],
+              "in": 0,
+              "out": 2
+            }
+          ]
+        },
+        {
+          "distance": 1013.2,
+          "duration": 51.6,
+          "geometry": "qj{xw@|sjjuDAqJBiH?_BBwL?eB@kI@}FDgXB}KFoNGy`@Hg[@wBBoq@?k@Uqb@?cb@?ocA?uN@_g@Hyp@Buo@?oAVyd@GaHHar@?yJDiQ?o@",
+          "name": "Katy Freeway Frontage Road",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.606607,
+              29.784249
+            ],
+            "bearing_before": 178.0,
+            "bearing_after": 88.0,
+            "instruction": "Turn left onto Katy Freeway Frontage Road",
+            "type": "turn",
+            "modifier": "left"
+          },
+          "driving_side": "right",
+          "weight": 71.1,
+          "intersections": [
+            {
+              "location": [
+                -95.606607,
+                29.784249
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 0,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.606422,
+                29.78425
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.606005,
+                29.784246
+              ],
+              "bearings": [
+                90,
+                270,
+                315
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.604802,
+                29.784235
+              ],
+              "bearings": [
+                90,
+                150,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.60235,
+                29.784242
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.600441,
+                29.784242
+              ],
+              "bearings": [
+                90,
+                270,
+                274
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.59758,
+                29.784222
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.597435,
+                29.784226
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 482.1,
+          "duration": 20.9,
+          "geometry": "sh{xw@~cviuDmFaaD{GotC",
+          "name": "",
+          "destinations": "I-10 East, US 90 East: Kate Freeway",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.596112,
+              29.784218
+            ],
+            "bearing_before": 90.0,
+            "bearing_after": 85.0,
+            "instruction": "Take the ramp on the left towards I-10 East: Kate Freeway",
+            "type": "off ramp",
+            "modifier": "slight left"
+          },
+          "driving_side": "right",
+          "weight": 26.4,
+          "intersections": [
+            {
+              "location": [
+                -95.596112,
+                29.784218
+              ],
+              "bearings": [
+                87,
+                90,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 9020.1,
+          "duration": 335.8,
+          "geometry": "}x{xw@llliuDYoRx@i|@Q{fAhBsbVDan@Hku@X}mAnEouRGsaBr@{{CrBcqIDovEeA__JGgf@FssAHatDTidKFivBAyx@TubBTmsBh@mgEb@mwDNux@t@wkBd@kgEo@sxAm@k~@_AagAYwj@mCawFKa]hAwbGn@uoB^ur@zAmy@nCqlAf@w[",
+          "name": "Katy Freeway (I-10; US 90 East)",
+          "ref": "I-10; US 90 East",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.591127,
+              29.784479
+            ],
+            "bearing_before": 85.0,
+            "bearing_after": 87.0,
+            "instruction": "Merge left onto I-10",
+            "type": "merge",
+            "modifier": "slight left"
+          },
+          "driving_side": "right",
+          "weight": 342.09999999999997,
+          "intersections": [
+            {
+              "location": [
+                -95.591127,
+                29.784479
+              ],
+              "bearings": [
+                87,
+                266,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.588684,
+                29.784472
+              ],
+              "bearings": [
+                90,
+                94,
+                269
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.57685,
+                29.784419
+              ],
+              "bearings": [
+                90,
+                266,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.573964,
+                29.784398
+              ],
+              "bearings": [
+                91,
+                95,
+                271
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.559788,
+                29.784272
+              ],
+              "bearings": [
+                91,
+                97,
+                271
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.55093,
+                29.784211
+              ],
+              "bearings": [
+                90,
+                267,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.545298,
+                29.784246
+              ],
+              "bearings": [
+                90,
+                264,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.540419,
+                29.784241
+              ],
+              "bearings": [
+                90,
+                94,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.53419,
+                29.78423
+              ],
+              "bearings": [
+                90,
+                270,
+                273
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.529761,
+                29.784216
+              ],
+              "bearings": [
+                90,
+                267,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.527898,
+                29.784205
+              ],
+              "bearings": [
+                90,
+                97,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.524691,
+                29.784184
+              ],
+              "bearings": [
+                85,
+                90,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.519077,
+                29.784131
+              ],
+              "bearings": [
+                90,
+                267,
+                271
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.51227,
+                29.784191
+              ],
+              "bearings": [
+                89,
+                266,
+                268
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.51157,
+                29.784204
+              ],
+              "bearings": [
+                89,
+                92,
+                269
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.501161,
+                29.78422
+              ],
+              "bearings": [
+                91,
+                267,
+                271
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 486.3,
+          "duration": 20.8,
+          "geometry": "c_{xw@b}ucuDdO_uC`DwjAvEkvA",
+          "name": "",
+          "destinations": "Wirt Road, Chimney Rock Road, Antoine Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.497698,
+              29.784066
+            ],
+            "bearing_before": 92.0,
+            "bearing_after": 97.0,
+            "instruction": "Take exit 761 towards Wirt Road",
+            "type": "off ramp",
+            "modifier": "slight right"
+          },
+          "driving_side": "right",
+          "weight": 27.9,
+          "intersections": [
+            {
+              "location": [
+                -95.497698,
+                29.784066
+              ],
+              "bearings": [
+                93,
+                97,
+                273
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            }
+          ],
+          "exits": "761"
+        },
+        {
+          "distance": 2931.5,
+          "duration": 177.39999999999998,
+          "geometry": "cczxw@~clcuDQmRJqnAv@cdC^woASuv@Zah@PoG`@uKr@iRxAgb@`@qM`Aq[f@yLz@iS^_Lv@qVTeInI{aDhAkr@Pyi@Be^Bm`@CuGCwMG{b@Y_j@Yo`@M}G[u^yDkvA{B{p@}Aah@yA}f@_GmbB{@wUm@sPeB_g@Yy^A{BEy`@@_cBj@suAWmsAh@yo@",
+          "name": "Katy Freeway Frontage Road",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.492688,
+              29.783618
+            ],
+            "bearing_before": 94.0,
+            "bearing_after": 87.0,
+            "instruction": "Merge right onto Katy Freeway Frontage Road",
+            "type": "merge",
+            "modifier": "slight right"
+          },
+          "driving_side": "right",
+          "weight": 245.4,
+          "intersections": [
+            {
+              "location": [
+                -95.492688,
+                29.783618
+              ],
+              "bearings": [
+                88,
+                268,
+                275
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.492377,
+                29.783627
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.491104,
+                29.783621
+              ],
+              "bearings": [
+                86,
+                91,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.488974,
+                29.783593
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.487682,
+                29.783577
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.485486,
+                29.783521
+              ],
+              "bearings": [
+                75,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.484922,
+                29.783476
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.484689,
+                29.783459
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.484232,
+                29.783426
+              ],
+              "bearings": [
+                90,
+                180,
+                270,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.483101,
+                29.783332
+              ],
+              "bearings": [
+                91,
+                94,
+                275
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.477791,
+                29.783103
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.477652,
+                29.783105
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.476154,
+                29.783124
+              ],
+              "bearings": [
+                75,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.475618,
+                29.783137
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.475475,
+                29.783144
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.474968,
+                29.783158
+              ],
+              "bearings": [
+                90,
+                270,
+                285
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.469885,
+                29.783533
+              ],
+              "bearings": [
+                85,
+                265,
+                270
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.468599,
+                29.783637
+              ],
+              "bearings": [
+                60,
+                90,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.468028,
+                29.783651
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.467487,
+                29.783654
+              ],
+              "bearings": [
+                90,
+                270,
+                300
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.465887,
+                29.783653
+              ],
+              "bearings": [
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 1068.9,
+          "duration": 47.8,
+          "geometry": "kczxw@`}pauDKs_@d@_[jC_f@zEue@lGcf@fHy[nGcVlIiTtKoT~h@ey@p[_f@lK{Q`L_TlMe[fTyk@lIcU`Rsg@`^k`A",
+          "name": "",
+          "destinations": "I-10 East",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.462369,
+              29.783622
+            ],
+            "bearing_before": 91.0,
+            "bearing_after": 88.0,
+            "instruction": "Take the ramp on the left towards I-10 East",
+            "type": "off ramp",
+            "modifier": "slight left"
+          },
+          "driving_side": "right",
+          "weight": 54.2,
+          "intersections": [
+            {
+              "location": [
+                -95.462369,
+                29.783622
+              ],
+              "bearings": [
+                89,
+                92,
+                272
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.456459,
+                29.781511
+              ],
+              "bearings": [
+                120,
+                315
+              ],
+              "classes": [
+                "tunnel",
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.455821,
+                29.781103
+              ],
+              "bearings": [
+                120,
+                300
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 1747.3,
+          "duration": 66.7,
+          "geometry": "uerxw@tz}`uDtKmZxE_NhEqOnCkJnCqO~CeR`Ca_@lAwcBl@}x@}Amz@d@uXc@icCb@qzAjAks@RgMhAcTxCwj@z]i|GvHs}A",
+          "name": "Katy Freeway (I-10; US 90)",
+          "ref": "I-10; US 90",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.452603,
+              29.779563
+            ],
+            "bearing_before": 118.0,
+            "bearing_after": 116.0,
+            "instruction": "Merge left onto I-10",
+            "type": "merge",
+            "modifier": "slight left"
+          },
+          "driving_side": "right",
+          "weight": 72.5,
+          "intersections": [
+            {
+              "location": [
+                -95.452603,
+                29.779563
+              ],
+              "bearings": [
+                117,
+                299,
+                301
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.447853,
+                29.778799
+              ],
+              "bearings": [
+                87,
+                267,
+                272
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.446902,
+                29.778846
+              ],
+              "bearings": [
+                90,
+                270,
+                285
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 535.8,
+          "duration": 35.1,
+          "geometry": "}doxw@j}z_uDdUuqBxKmbArKsuAhEcp@n@eHv@kL",
+          "name": "",
+          "destinations": "Washington Avenue, Westcott Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.434726,
+              29.778015
+            ],
+            "bearing_before": 95.0,
+            "bearing_after": 101.0,
+            "instruction": "Take exit 764 towards Washington Avenue",
+            "type": "off ramp",
+            "modifier": "slight right"
+          },
+          "driving_side": "right",
+          "weight": 35.2,
+          "intersections": [
+            {
+              "location": [
+                -95.434726,
+                29.778015
+              ],
+              "bearings": [
+                90,
+                105,
+                270
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            }
+          ],
+          "exits": "764"
+        },
+        {
+          "distance": 67.3,
+          "duration": 8.9,
+          "geometry": "wkmxw@|hp_uDpAaDf@gDnA{D`@w@b@y@tE}GrBqG",
+          "name": "",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.429279,
+              29.7771
+            ],
+            "bearing_before": 98.0,
+            "bearing_after": 118.0,
+            "instruction": "Keep right at the fork",
+            "type": "fork",
+            "modifier": "slight right"
+          },
+          "driving_side": "right",
+          "weight": 9.1,
+          "intersections": [
+            {
+              "location": [
+                -95.429279,
+                29.7771
+              ],
+              "bearings": [
+                90,
+                120,
+                285
+              ],
+              "classes": [
+                "motorway"
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            }
+          ]
+        },
+        {
+          "distance": 18.8,
+          "duration": 3.3,
+          "geometry": "}xlxw@tco_uDhGoF",
+          "name": "Westcott Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.428683,
+              29.776799
+            ],
+            "bearing_before": 115.0,
+            "bearing_after": 140.0,
+            "instruction": "Make a slight right onto Westcott Street",
+            "type": "turn",
+            "modifier": "slight right"
+          },
+          "driving_side": "right",
+          "weight": 15.3,
+          "intersections": [
+            {
+              "location": [
+                -95.428683,
+                29.776799
+              ],
+              "bearings": [
+                135,
+                300,
+                315
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 1,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 400.3,
+          "duration": 37.5,
+          "geometry": "splxw@d|n_uD`K`PvDjHXfFAlEWvEkE|Og@hF@~Dj@tDdEdLjDlJbG|RtDhZhCxa@^|OApJq@lX",
+          "name": "Memorial Loop Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.428563,
+              29.776666
+            ],
+            "bearing_before": 140.0,
+            "bearing_after": 230.0,
+            "instruction": "Turn right onto Memorial Loop Drive",
+            "type": "turn",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 39.0,
+          "intersections": [
+            {
+              "location": [
+                -95.428563,
+                29.776666
+              ],
+              "bearings": [
+                135,
+                225,
+                315
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.430601,
+                29.776165
+              ],
+              "bearings": [
+                60,
+                225,
+                255
+              ],
+              "entry": [
+                false,
+                false,
+                true
+              ],
+              "in": 0,
+              "out": 2
+            },
+            {
+              "location": [
+                -95.431866,
+                29.775989
+              ],
+              "bearings": [
+                90,
+                120,
+                270
+              ],
+              "entry": [
+                false,
+                false,
+                true
+              ],
+              "in": 0,
+              "out": 2
+            }
+          ]
+        },
+        {
+          "distance": 74.0,
+          "duration": 11.2,
+          "geometry": "}gkxw@rov_uDnBfFxB~D`CnBtCtAvC^vK_@",
+          "name": "",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.432458,
+              29.776015
+            ],
+            "bearing_before": 272.0,
+            "bearing_after": 240.0,
+            "instruction": "Make a slight left",
+            "type": "turn",
+            "modifier": "slight left"
+          },
+          "driving_side": "right",
+          "weight": 12.0,
+          "intersections": [
+            {
+              "location": [
+                -95.432458,
+                29.776015
+              ],
+              "bearings": [
+                90,
+                240,
+                285
+              ],
+              "entry": [
+                false,
+                true,
+                true
+              ],
+              "in": 0,
+              "out": 1
+            }
+          ]
+        },
+        {
+          "distance": 740.9,
+          "duration": 66.89999999999999,
+          "geometry": "kfjxw@`cw_uDdNmI`NsHdQqFxUcFjN{BrMuAjDcAdRkApCWdAGlu@oHl@KtTyDjPcF`SmJrWmRfC{BrBkBfEyDh`@kZbNqGhCmAnJiCdMgCtLsAfDW",
+          "name": "East Memorial Loop Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.432769,
+              29.775478
+            ],
+            "bearing_before": 175.0,
+            "bearing_after": 149.0,
+            "instruction": "Go straight onto East Memorial Loop Drive",
+            "type": "turn",
+            "modifier": "straight"
+          },
+          "driving_side": "right",
+          "weight": 67.2,
+          "intersections": [
+            {
+              "location": [
+                -95.432769,
+                29.775478
+              ],
+              "bearings": [
+                0,
+                150,
+                315
+              ],
+              "entry": [
+                false,
+                true,
+                false
+              ],
+              "in": 0,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.432327,
+                29.774703
+              ],
+              "bearings": [
+                135,
+                165,
+                345
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.432074,
+                29.773772
+              ],
+              "bearings": [
+                15,
+                180,
+                345
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.430338,
+                29.770053
+              ],
+              "bearings": [
+                75,
+                165,
+                330
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            }
+          ]
+        },
+        {
+          "distance": 0.0,
+          "duration": 0.0,
+          "geometry": "uf~ww@d_r_uD",
+          "name": "East Memorial Loop Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.430147,
+              29.769339
+            ],
+            "bearing_before": 173.0,
+            "bearing_after": 0.0,
+            "instruction": "You have arrived at your 1st destination, on the right",
+            "type": "arrive",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 0.0,
+          "intersections": [
+            {
+              "location": [
+                -95.430147,
+                29.769339
+              ],
+              "bearings": [
+                353
+              ],
+              "entry": [
+                true
+              ],
+              "in": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "distance": 8452.9,
+      "duration": 684.9,
+      "summary": "Memorial Drive, Texas Avenue",
+      "steps": [
+        {
+          "distance": 707.2,
+          "duration": 62.4,
+          "geometry": "uf~ww@d_r_uDdE]zAItAgAbCyCrF{IxAiCvA}CxBcHpAuGrA{Ex@uB|@}BrCkF~C_F`EyEjEiEfEkDxD}BzEiClJyDtEuAdHaBbGq@jJo@tCGbDGhINfG^nH`AbHvAdFrAdIbDpDjBdFfDnDrC`EfEzGrIRVvIhJpEhEfFvDnF`D~GdGhHfEpf@|SjEB",
+          "name": "East Memorial Loop Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.430147,
+              29.769339
+            ],
+            "bearing_before": 0.0,
+            "bearing_after": 173.0,
+            "instruction": "Head south on East Memorial Loop Drive",
+            "type": "depart",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 74.9,
+          "intersections": [
+            {
+              "location": [
+                -95.430147,
+                29.769339
+              ],
+              "bearings": [
+                173
+              ],
+              "entry": [
+                true
+              ],
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 1944.9,
+          "duration": 153.70000000000002,
+          "geometry": "qbtww@`wq_uD~IxDnB_H~Owj@vCqM~BaPrAwN~@gRFqQ?gAAaEIqUA}CA{DUov@`@mOjAkOdBsMlCcMbFkO|GuMnFuInJuL`MmLhRqQ|H{IhHiKfGwK|G}NpGgSnDaQ~B{Sz@oPLcM@eA?}K?qBDqZQi^IsSIqj@A_JMoh@EgKIqLEec@Ggk@W_Ie@sGgAiLs@}Ei@qDm@yC{@cE}AwGuBuGkCgGaFkJiIiMiOeQsHwJiCuEuBuDmAyCwBiF}DaMsCsMuBsN_AgNQcPJsIPqDxAqQfCgOfAgFhBeGvFiP",
+          "name": "Memorial Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.430017,
+              29.764153
+            ],
+            "bearing_before": 212.0,
+            "bearing_after": 203.0,
+            "instruction": "Turn left onto Memorial Drive",
+            "type": "turn",
+            "modifier": "left"
+          },
+          "driving_side": "right",
+          "weight": 235.50000000000006,
+          "intersections": [
+            {
+              "location": [
+                -95.430017,
+                29.764153
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                false,
+                true,
+                true
+              ],
+              "in": 0,
+              "out": 2
+            },
+            {
+              "location": [
+                -95.43011,
+                29.763977
+              ],
+              "bearings": [
+                30,
+                120,
+                195,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 0,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.42733,
+                29.763438
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.425823,
+                29.763395
+              ],
+              "bearings": [
+                15,
+                105,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.425101,
+                29.763159
+              ],
+              "bearings": [
+                30,
+                120,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.424695,
+                29.762896
+              ],
+              "bearings": [
+                45,
+                135,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.424261,
+                29.762487
+              ],
+              "bearings": [
+                45,
+                135,
+                240,
+                315
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.42281,
+                29.761458
+              ],
+              "bearings": [
+                30,
+                105,
+                225,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.422187,
+                29.761306
+              ],
+              "bearings": [
+                15,
+                90,
+                180,
+                285
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.421439,
+                29.761268
+              ],
+              "bearings": [
+                90,
+                180,
+                270,
+                330
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                true
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.420941,
+                29.761265
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.42011,
+                29.761279
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.419237,
+                29.761285
+              ],
+              "bearings": [
+                0,
+                90,
+                165,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.418377,
+                29.761295
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.417581,
+                29.761303
+              ],
+              "bearings": [
+                0,
+                90,
+                180,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.416162,
+                29.761421
+              ],
+              "bearings": [
+                75,
+                165,
+                255,
+                345
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                true
+              ],
+              "in": 2,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 5523.4,
+          "duration": 420.4,
+          "geometry": "c{pww@|_n~tDnG}NdL}UvFqMbF_PbEwPrCgPnBgSx@cN`@sOvA{mAGo[aAghAm@{qAc@wPy@aPcBwSoCyToCoPoDqQqGwVoh@o|Aeo@ofBgJ{W_DeLoGcXcD{QaCgTgAwOg@yP?eQNwNt@wPrAsPnBgQ`ZauBxCiPpC_NrI}a@rB}JxBoO~BiSrAaP~@gP~@mc@l@iP~@eN~AmNxCwPhHaYfIuZzEgTvDcSlE{XzDuYrCa\\dB_WbAwWf@uXCsZ_@o_@yCkw@wBml@}@gM}AcNiByLaDiPkHcYoT{x@eOwl@{CcMwD_RuCqSeDqWoB}RmAoMkBcUaBab@iAsg@{Amw@g@k_AiAmgBqCooEFmRf@oQdB_RdCwQlCgM|DcO`EyKxFsO\\u@xBsEdFaKvGyM`E}Hn[im@rSs`@b^gt@b_@_t@nFuKvWeg@h^yr@d@}@`AmB`@w@rYck@tCwFzAoCjYgi@tB{DrAmCdXci@fCcFfBmD~Xoj@zA{CzAuCfHqNxNmYnByD",
+          "name": "Memorial Drive",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.411727,
+              29.762498
+            ],
+            "bearing_before": 116.0,
+            "bearing_after": 122.0,
+            "instruction": "Continue straight to stay on Memorial Drive",
+            "type": "continue",
+            "modifier": "straight"
+          },
+          "driving_side": "right",
+          "weight": 577.0,
+          "intersections": [
+            {
+              "location": [
+                -95.411727,
+                29.762498
+              ],
+              "bearings": [
+                120,
+                135,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.406318,
+                29.761632
+              ],
+              "bearings": [
+                90,
+                255,
+                270
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.401301,
+                29.762785
+              ],
+              "bearings": [
+                60,
+                75,
+                240
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.399645,
+                29.763556
+              ],
+              "bearings": [
+                60,
+                225,
+                240
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.398634,
+                29.763952
+              ],
+              "bearings": [
+                75,
+                90,
+                255
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.396038,
+                29.764022
+              ],
+              "bearings": [
+                105,
+                270,
+                285
+              ],
+              "entry": [
+                true,
+                false,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.378653,
+                29.763452
+              ],
+              "bearings": [
+                75,
+                90,
+                255
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.375155,
+                29.763658
+              ],
+              "bearings": [
+                90,
+                105,
+                270
+              ],
+              "entry": [
+                true,
+                true,
+                false
+              ],
+              "in": 2,
+              "out": 0
+            },
+            {
+              "location": [
+                -95.367654,
+                29.763047
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.365979,
+                29.762024
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.365127,
+                29.761526
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.364279,
+                29.761012
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.363433,
+                29.760496
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.362604,
+                29.759995
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.36249,
+                29.759926
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.36166,
+                29.759425
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.360818,
+                29.758898
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.359959,
+                29.758385
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            },
+            {
+              "location": [
+                -95.359098,
+                29.757871
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                true,
+                false,
+                false
+              ],
+              "in": 3,
+              "out": 1
+            }
+          ]
+        },
+        {
+          "distance": 101.4,
+          "duration": 22.0,
+          "geometry": "ozfww@bre{tD|DfCfEvCnLjIxTxO",
+          "name": "La Branch Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.358258,
+              29.757368
+            ],
+            "bearing_before": 123.0,
+            "bearing_after": 212.0,
+            "instruction": "Turn right onto La Branch Street",
+            "type": "turn",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 47.2,
+          "intersections": [
+            {
+              "location": [
+                -95.358258,
+                29.757368
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                true,
+                true,
+                false
+              ],
+              "in": 3,
+              "out": 2
+            }
+          ]
+        },
+        {
+          "distance": 100.0,
+          "duration": 13.5,
+          "geometry": "_keww@hvf{tD__@dt@",
+          "name": "Capitol Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.358837,
+              29.756608
+            ],
+            "bearing_before": 213.0,
+            "bearing_after": 303.0,
+            "instruction": "Turn right onto Capitol Street",
+            "type": "turn",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 37.8,
+          "intersections": [
+            {
+              "location": [
+                -95.358837,
+                29.756608
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                false,
+                false,
+                true,
+                true
+              ],
+              "in": 0,
+              "out": 3
+            }
+          ]
+        },
+        {
+          "distance": 76.1,
+          "duration": 12.9,
+          "geometry": "_kfww@nkh{tDqUuPwKcI",
+          "name": "Austin Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.359688,
+              29.75712
+            ],
+            "bearing_before": 303.0,
+            "bearing_after": 33.0,
+            "instruction": "Turn right onto Austin Street",
+            "type": "turn",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 12.9,
+          "intersections": [
+            {
+              "location": [
+                -95.359688,
+                29.75712
+              ],
+              "bearings": [
+                30,
+                120,
+                210,
+                300
+              ],
+              "entry": [
+                true,
+                false,
+                false,
+                true
+              ],
+              "in": 1,
+              "out": 0
+            }
+          ]
+        },
+        {
+          "distance": 0.0,
+          "duration": 0.0,
+          "geometry": "ingww@tog{tD",
+          "name": "Austin Street",
+          "mode": "driving",
+          "maneuver": {
+            "location": [
+              -95.359243,
+              29.757685
+            ],
+            "bearing_before": 35.0,
+            "bearing_after": 0.0,
+            "instruction": "You have arrived at your destination, on the right",
+            "type": "arrive",
+            "modifier": "right"
+          },
+          "driving_side": "right",
+          "weight": 0.0,
+          "intersections": [
+            {
+              "location": [
+                -95.359243,
+                29.757685
+              ],
+              "bearings": [
+                215
+              ],
+              "entry": [
+                true
+              ],
+              "in": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "routeOptions": {
+    "baseUrl": "https://api.mapbox.com",
+    "user": "mapbox",
+    "profile": "driving",
+    "coordinates": [
+      [
+        -95.6332,
+        29.789
+      ],
+      [
+        -95.4332,
+        29.769
+      ],
+      [
+        -95.3591,
+        29.7576
+      ]
+    ],
+    "geometries": "polyline6",
+    "steps": true,
+    "access_token": "pk.eyJ1IjoibWVjaGV2YXJyaWEiLCJhIjoiY2pxbXNuMXF0MGwzNTQ5bzJwNGtyMTRqdyJ9.WZfALlPxuOveabQDrroLcQ",
+    "uuid": "cjtuigkf2028o4qpbk9c9ajyb"
+  }
+}

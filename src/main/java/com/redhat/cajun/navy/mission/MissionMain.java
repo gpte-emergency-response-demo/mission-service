@@ -4,6 +4,7 @@ package com.redhat.cajun.navy.mission;
 import com.redhat.cajun.navy.mission.http.MissionRestVerticle;
 import com.redhat.cajun.navy.mission.message.MissionConsumerVerticle;
 import com.redhat.cajun.navy.mission.message.MissionProducerVerticle;
+import com.redhat.cajun.navy.mission.message.ResponderLocConsumer;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
@@ -68,7 +69,7 @@ public class MissionMain extends AbstractVerticle {
         vertx.deployVerticle(new MissionRestVerticle(), options, rFuture.completer());
         vertx.deployVerticle(new MissionConsumerVerticle(), options, cFuture.completer());
         vertx.deployVerticle(new MissionProducerVerticle(), options, cFuture.completer());
-
+        vertx.deployVerticle(new ResponderLocConsumer(), options, rFuture.completer());
 
         CompositeFuture.all(rFuture, cFuture, pFuture).setHandler(ar -> {
             if (ar.succeeded()) {

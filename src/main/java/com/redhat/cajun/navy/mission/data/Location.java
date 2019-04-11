@@ -1,5 +1,8 @@
 package com.redhat.cajun.navy.mission.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Location {
 
     private double lat;
@@ -29,5 +32,14 @@ public class Location {
         this.lon = input;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
 
+
+        return Double.compare(location.lat, lat) == 0 &&
+                Double.compare(location.lon, lon) == 0;
+    }
 }

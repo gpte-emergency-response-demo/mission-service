@@ -28,7 +28,7 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
         Mission m = Json.decodeValue(message, MissionCommand.class).getBody();
         MissionCommand mc = new MissionCommand();
 
-        mc.createMissionCommandHeaders("MissionUpdatedCommand", "MissionService", System.currentTimeMillis());
+        mc.createMissionCommandHeaders(mc.getMessageType());
         mc.setMission(m);
 
         return mc;

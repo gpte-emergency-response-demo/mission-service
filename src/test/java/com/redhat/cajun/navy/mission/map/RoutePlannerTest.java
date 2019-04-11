@@ -39,7 +39,7 @@ public class RoutePlannerTest {
         Location wPoint = new Location(29.7476, -95.3691);
         Location dest = new Location( 29.7576,-95.3591);
         MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
-        assertEquals(r.getSteps().size(), 23);
+        assertEquals(r.getSteps().size(), 22);
 
     }
 
@@ -52,6 +52,20 @@ public class RoutePlannerTest {
         MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
         assertEquals(r.getSteps().size(), 4);
     }
+
+    // "responderStartLat":"34.22543","responderStartLong":"-77.89744","incidentLat":"-77.9210864462409","incidentLong":"34.21143217819422","destinationLat":"34.05830","destinationLong":"-77.88850"
+
+    @Test
+    public void asyncMapboxDirectionsRequestTest() {
+        RoutePlanner p = new RoutePlanner(MAP_TOKEN);
+        Location origin = new Location(31.2254,-77.8974);
+        Location wPoint = new Location(34.2114,-77.9210);
+        Location dest = new Location(31.0583, -77.8880 );
+        MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
+    }
+
+
+
 
 
 }

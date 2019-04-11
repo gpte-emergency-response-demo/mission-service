@@ -22,6 +22,8 @@ public abstract class MissionMessageVerticle extends AbstractVerticle {
 
     public String createMissionCommandTopic = null;
 
+    public String responderLoctationUpdateTopic = null;
+
     Map<String, String> config = new HashMap<>();
 
     protected abstract void init(Future<Void> startFuture) throws Exception;
@@ -40,6 +42,7 @@ public abstract class MissionMessageVerticle extends AbstractVerticle {
         config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         missionUpdateCommandTopic = config().getString("kafka.pub");
         createMissionCommandTopic = config().getString("kafka.sub");
+        responderLoctationUpdateTopic = config().getString("kafka.sub.responder.update");
         init(startFuture);
 
     }

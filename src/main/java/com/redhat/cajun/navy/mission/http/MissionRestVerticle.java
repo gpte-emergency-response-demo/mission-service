@@ -3,10 +3,7 @@ package com.redhat.cajun.navy.mission.http;
 
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
-import com.redhat.cajun.navy.mission.data.Location;
-import com.redhat.cajun.navy.mission.data.Mission;
-import com.redhat.cajun.navy.mission.data.MissionCommand;
-import com.redhat.cajun.navy.mission.data.MissionRoute;
+import com.redhat.cajun.navy.mission.data.*;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
@@ -16,8 +13,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import rx.Observable;
 
 import java.net.HttpURLConnection;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -36,6 +35,26 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     private String MAPBOX_ACCESS_TOKEN = null;
 
+    public enum MessageType {
+        MissionStartedEvent("MissionStartedEvent"),
+        MissionPickedUpEvent("MissionPickedUpEvent"),
+        MissionCompletedEvent("MissionCompletedEvent");
+
+        private String messageType;
+
+        MessageType(String messageType) {
+            this.messageType = messageType;
+        }
+
+        public String getMessageType() {
+            return messageType;
+        }
+
+    }
+
+
+
+
     @Override
     protected void init(Future<Void> startFuture) {
         String host = config().getString("http.host");
@@ -53,8 +72,10 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
 
         router.route().handler(BodyHandler.create());
+        router.get(MISSIONS_EP+"/keys").handler(this::getKeysOnly);
         router.get(MISSIONS_EP).handler(this::getAll);
-        router.get(MISSIONS_EP + "/:id").handler(this::missionById);
+        router.get(MISSIONS_EP + "/:key").handler(this::missionByKey);
+
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(port, ar -> {
@@ -109,7 +130,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 m.setRoute(mRoute);
 
-                defaultCache.putAsync(m.getId(), m.toString())
+                defaultCache.putIfAbsentAsync(m.getKey(), m.toString())
                         .whenComplete((s, t) -> {
                             if (t == null) {
                                 message.reply(m.toString());
@@ -118,15 +139,43 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                                 System.out.println(m.toString());
                             }
                         });
-                sendUpdate(m);
+
+                sendUpdate(m, MessageType.MissionStartedEvent);
 
                 break;
 
             case "UPDATE_ENTRY":
-                // INCOMPLETE IMPLEMENTATION
-                Mission mission = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
-                mission.setStatus(MissionEvents.UPDATED.getActionType());
-                sendUpdate(mission);
+                Responder responder = Json.decodeValue(String.valueOf(message.body()), Responder.class);
+
+                Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
+                if(mission != null) {
+
+                    mission.addResponderLocationHistory(new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation()));
+
+                    if(responder.getStatus() == Responder.Status.PICKEDUP) {
+                        mission.setStatus(MissionEvents.UPDATED.getActionType());
+                        sendUpdate(mission, MessageType.MissionPickedUpEvent);
+                    }
+                    else if(responder.getStatus() == Responder.Status.DROPPED) {
+                        mission.setStatus(MissionEvents.COMPLETED.getActionType());
+                        sendUpdate(mission, MessageType.MissionCompletedEvent);
+                    }
+
+
+                    defaultCache.putAsync(mission.getKey(), mission.toString())
+                            .whenComplete((s, t) -> {
+                                if (t == null) {
+                                    message.reply(mission.toString());
+                                    System.out.println(mission.toString());
+                                } else {
+                                    System.out.println(mission.toString());
+                                }
+                            });
+
+                    message.reply("Responder location updated");
+                }
+                else message.fail(ErrorCodes.BAD_ACTION.ordinal(), "Bad action: " + action +" MissionId Doest not exist");
+
                 break;
 
             default:
@@ -136,10 +185,10 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     }
 
 
-    private void sendUpdate(Mission m) {
+    private void sendUpdate(Mission m, MessageType event) {
         // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
         MissionCommand mc = new MissionCommand();
-        mc.createMissionCommandHeaders(m.getStatus(), "MissionService", System.currentTimeMillis());
+        mc.createMissionCommandHeaders(event.getMessageType());
         mc.setMission(m);
 
         DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
@@ -154,8 +203,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     }
 
 
-    private void getAll(RoutingContext routingContext) {
-// THIS METHOD IS INCOMPLETE
+    private void getKeysOnly(RoutingContext routingContext) {
+
         Set<String> m = defaultCache.keySet();
 
         routingContext.response()
@@ -164,30 +213,40 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .end(Json.encodePrettily(m.toArray()));
     }
 
-    private void missionById(RoutingContext routingContext) {
+    private void getAll(RoutingContext routingContext) {
 
-        String id = routingContext.request().getParam("id");
-        logger.info("missionById: id=" + id);
+        routingContext.response()
+                .setStatusCode(201)
+                .putHeader("content-type", "application/json; charset=utf-8")
+                .end(Json.encodePrettily(defaultCache.keySet().toArray()));
+    }
 
+    private void missionByKey(RoutingContext routingContext) {
 
-        defaultCache.getAsync(routingContext.request().getParam("id"))
-                .thenAccept(value -> {
-                    int responseCode = HttpURLConnection.HTTP_CREATED;
-                    if (value == null) {
-                        responseCode = HttpURLConnection.HTTP_NO_CONTENT;
-                        String.format("Mission id %s not found", id);
-                        routingContext.response()
-                                .setStatusCode(responseCode)
-                                .end("Response:"+HttpURLConnection.HTTP_NO_CONTENT);
-                    } else {
-                        Mission m = Json.decodeValue(value, Mission.class);
-                        routingContext.response()
-                                .setStatusCode(responseCode)
-                                .putHeader("content-type", "application/json; charset=utf-8")
-                                .end(Json.encodePrettily(m));
-                    }
-                });
+        String key = routingContext.request().getParam("key");
+        logger.info("missionByKey: key=" + key);
 
+        int responseCode = HttpURLConnection.HTTP_CREATED;
+        Mission m = missionByKey(key);
+        if (m == null) {
+            responseCode = HttpURLConnection.HTTP_NO_CONTENT;
+            String.format("Mission key %s not found", key);
+            routingContext.response()
+                    .setStatusCode(responseCode)
+                    .end("Response:"+HttpURLConnection.HTTP_NO_CONTENT);
+        } else {
+           routingContext.response()
+               .setStatusCode(responseCode)
+               .putHeader("content-type", "application/json; charset=utf-8")
+               .end(Json.encodePrettily(m));
+        }
+    }
+
+    private Mission missionByKey(String m){
+       String val = defaultCache.get(m);
+        if(val != null)
+            return Json.decodeValue(val, Mission.class);
+        else return null;
     }
 
 }

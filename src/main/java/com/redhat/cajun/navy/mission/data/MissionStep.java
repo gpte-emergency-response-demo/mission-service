@@ -13,9 +13,30 @@ public class MissionStep {
     private String instruction = null;
     private double weight = 0.0f;
     private Location loc = null;
+    private boolean isWayPoint = false;
+    private boolean isDestination = false;
+
 
     public MissionStep() {
     }
+
+
+    public boolean isWayPoint() {
+        return isWayPoint;
+    }
+
+    public void setWayPoint(boolean wayPoint) {
+        isWayPoint = wayPoint;
+    }
+
+    public boolean isDestination() {
+        return isDestination;
+    }
+
+    public void setDestination(boolean destination) {
+        isDestination = destination;
+    }
+
 
     public MissionStep(double distance, double duration, String name, String instruction, double weight, Point p) {
         this.distance = distance;

@@ -1,7 +1,11 @@
 package com.redhat.cajun.navy.mission.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.vertx.core.json.Json;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -22,6 +26,7 @@ public class Mission {
 
     public Mission(){
         id = UUID.randomUUID().toString();
+        responderLocationHistory = new ArrayList<>();
     }
 
     public String getId() {
@@ -104,6 +109,10 @@ public class Mission {
         this.responderLocationHistory = input;
     }
 
+    public void addResponderLocationHistory(ResponderLocationHistory history){
+        responderLocationHistory.add(history);
+
+    }
     public String getStatus() {
         return status;
     }
@@ -128,5 +137,23 @@ public class Mission {
     @Override
     public String toString() {
         return toJson();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mission mission = (Mission) o;
+        return Objects.equals(responderId, mission.responderId) && Objects.equals(incidentId, mission.incidentId);
+    }
+
+    @JsonIgnore
+    public String getKey(){
+        return this.incidentId+this.responderId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(responderId+incidentId);
     }
 }

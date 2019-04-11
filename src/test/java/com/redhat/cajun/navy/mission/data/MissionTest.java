@@ -17,4 +17,28 @@ public class MissionTest {
         assertNotNull(m.getRoute());
         assertNotNull(m.getRoute().getSteps());
     }
+
+    @Test
+    public void testMissionEquals(){
+        String j1 = "{\"id\":\"6932de7b-8435-4ded-8f32-c3e5b704998c\",\"messageType\":\"CreateMissionCommand\",\"invokingService\":\"ProcessService\",\"timestamp\":1552899692390,\"body\":{\"incidentId\":\"98965816-e6eb-4edc-9b85-9a6b6ca474b3\",\"responderId\":\"responderId\",\"responderStartLat\":\"31.12345\",\"responderStartLong\":\"-71.98765\",\"incidentLat\":\"30.12345\",\"incidentLong\":\"-70.98765\",\"destinationLat\":\"32.12345\",\"destinationLong\":\"-72.98765\"}}";
+        String j2 = "{\"id\":\"6932de7b-8435-4ded-8f32-c3e5b704999c\",\"messageType\":\"CreateMissionCommand\",\"invokingService\":\"ProcessService\",\"timestamp\":1552899692390,\"body\":{\"incidentId\":\"98965816-e6eb-4edc-9b85-9a6b6ca474b3\",\"responderId\":\"responderId\",\"responderStartLat\":\"29.7890\",\"responderStartLong\":\"-95.6332\",\"incidentLat\":\"29.7476\",\"incidentLong\":\"-95.3691\",\"destinationLat\":\"29.7576\",\"destinationLong\":\"-95.3591\"}}";
+
+
+        MissionCommand m1 = Json.decodeValue(j1, MissionCommand.class);
+        MissionCommand m2 = Json.decodeValue(j2, MissionCommand.class);
+
+        assertEquals(m1.getBody(), m2.getBody());
+
+    }
+
+    public void testMissionNotEquals() {
+        String j1 = "{\"id\":\"6932de7b-8435-4ded-8f32-c3e5b704998c\",\"messageType\":\"CreateMissionCommand\",\"invokingService\":\"ProcessService\",\"timestamp\":1552899692390,\"body\":{\"incidentId\":\"98965816-e6eb-4edc-9b85-9a6b6ca474b3\",\"responderId\":\"responderAAd\",\"responderStartLat\":\"31.12345\",\"responderStartLong\":\"-71.98765\",\"incidentLat\":\"30.12345\",\"incidentLong\":\"-70.98765\",\"destinationLat\":\"32.12345\",\"destinationLong\":\"-72.98765\"}}";
+        String j2 = "{\"id\":\"6932de7b-8435-4ded-8f32-c3e5b704999c\",\"messageType\":\"CreateMissionCommand\",\"invokingService\":\"ProcessService\",\"timestamp\":1552899692390,\"body\":{\"incidentId\":\"98965816-e6eb-4edc-9b85-9a6b6ca474b3\",\"responderId\":\"responderId\",\"responderStartLat\":\"29.7890\",\"responderStartLong\":\"-95.6332\",\"incidentLat\":\"29.7476\",\"incidentLong\":\"-95.3691\",\"destinationLat\":\"29.7576\",\"destinationLong\":\"-95.3591\"}}";
+
+
+        MissionCommand m1 = Json.decodeValue(j1, MissionCommand.class);
+        MissionCommand m2 = Json.decodeValue(j2, MissionCommand.class);
+
+        assertNotEquals(m1.getBody(), m2.getBody());
+    }
 }

@@ -35,9 +35,9 @@ public abstract class MissionMessageVerticle extends AbstractVerticle {
         config.put("bootstrap.servers", config().getString("kafka.connect", "localhost:9092"));
         config.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         config.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        config.put("group.id", "my_group");
+        config.put("group.id", config().getString("kafka.group.id"));
         config.put("auto.offset.reset", "earliest");
-        config.put("enable.auto.commit", "false");
+        config.put("enable.auto.commit", config().getBoolean("kafka.autocommit", true).toString());
         config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         missionUpdateCommandTopic = config().getString("kafka.pub");

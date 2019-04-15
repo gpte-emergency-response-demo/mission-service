@@ -22,19 +22,6 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
     }
 
 
-    protected MissionCommand getMissionCommand(String message) {
-
-        System.out.println(message);
-        Mission m = Json.decodeValue(message, MissionCommand.class).getBody();
-        MissionCommand mc = new MissionCommand();
-
-        mc.createMissionCommandHeaders(mc.getMessageType());
-        mc.setMission(m);
-
-        return mc;
-
-    }
-
     public void onMessage(Message<JsonObject> message) {
 
         if (!message.headers().contains("action")) {
@@ -48,7 +35,7 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
             case "PUBLISH_UPDATE":
 
                 KafkaProducerRecord<String, String> record =
-                        KafkaProducerRecord.create(missionUpdateCommandTopic, getMissionCommand(String.valueOf(message.body())).toString());
+                        KafkaProducerRecord.create(missionUpdateCommandTopic, String.valueOf(message.body()));
 
                 producer.write(record, done -> {
 
@@ -59,7 +46,8 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
                                 ", partition=" + recordMetadata.getPartition() +
                                 ", offset=" + recordMetadata.getOffset());
 
-                        message.reply("Message delivered to topic");
+                        message.reply("Message delivered to topic "+missionUpdateCommandTopic);
+
                     }
 
                 });

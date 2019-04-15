@@ -132,15 +132,10 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 defaultCache.putIfAbsentAsync(m.getKey(), m.toString())
                         .whenComplete((s, t) -> {
-                            if (t == null) {
-                                message.reply(m.toString());
-                                System.out.println(m.toString());
-                            } else {
-                                System.out.println(m.toString());
-                            }
-                        });
 
+                        });
                 sendUpdate(m, MessageType.MissionStartedEvent);
+
 
                 break;
 
@@ -148,10 +143,12 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 Responder responder = Json.decodeValue(String.valueOf(message.body()), Responder.class);
 
                 Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
+
                 if(mission != null) {
-
                     mission.addResponderLocationHistory(new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation()));
+                    System.out.println("Responder status: "+responder.getStatus());
 
+                    // We are only interested in the following status for MissionEvents
                     if(responder.getStatus() == Responder.Status.PICKEDUP) {
                         mission.setStatus(MissionEvents.UPDATED.getActionType());
                         sendUpdate(mission, MessageType.MissionPickedUpEvent);
@@ -161,15 +158,9 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                         sendUpdate(mission, MessageType.MissionCompletedEvent);
                     }
 
-
                     defaultCache.putAsync(mission.getKey(), mission.toString())
                             .whenComplete((s, t) -> {
-                                if (t == null) {
-                                    message.reply(mission.toString());
-                                    System.out.println(mission.toString());
-                                } else {
-                                    System.out.println(mission.toString());
-                                }
+                                message.reply(mission.toString());
                             });
 
                     message.reply("Responder location updated");
@@ -196,7 +187,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
             if (reply.succeeded()) {
                 System.out.println("Message publish request accepted");
             } else {
-                System.out.println("Message publish request not accepted");
+                System.err.println("Message publish request not accepted while sending update "+event);
             }
         });
 

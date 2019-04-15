@@ -4,7 +4,9 @@ data:
     kafka.connect=localhost:9092
     kafka.sub=topic-mission-command
     kafka.pub=topic-mission-event
-    kafka.sub.responder.update=topic-responder-loc-update
+    kafka.sub.responder.update=topic-responder-location-update
+    kafka.autocommit=true
+    kafka.group.id=mission-service
     jdg.svc.name=datagrid-service
     jdg.app.name=datagrid-service
     jdg.app.user.name=demo

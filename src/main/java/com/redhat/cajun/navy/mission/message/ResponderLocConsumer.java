@@ -13,8 +13,13 @@ public class ResponderLocConsumer  extends MissionMessageVerticle {
         consumer = KafkaConsumer.create(vertx, config);
 
         consumer.handler(record -> {
-                DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.UPDATE_ENTRY.toString());
-                sendMessage(options, record.value());
+            DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.UPDATE_ENTRY.toString());
+            vertx.eventBus().send(CACHE_QUEUE, record.value(), options, reply -> {
+                if (reply.failed()) {
+                    System.err.println("Incoming Message not accepted "+record.topic());
+                    System.err.println(record.value());
+                }
+            });
 
         });
 
@@ -28,18 +33,6 @@ public class ResponderLocConsumer  extends MissionMessageVerticle {
         });
 
     }
-
-    private void sendMessage(DeliveryOptions options, String value){
-        vertx.eventBus().send(CACHE_QUEUE, value, options, reply -> {
-            if (reply.succeeded()) {
-                System.out.println("Message accepted");
-            } else {
-                System.out.println("Message not accepted "+value);
-            }
-        });
-
-    }
-
 
     @Override
     public void stop() throws Exception {

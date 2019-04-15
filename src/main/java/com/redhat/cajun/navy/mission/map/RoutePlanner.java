@@ -62,12 +62,10 @@ public class RoutePlanner {
                             MissionStep step = new MissionStep(s.distance(), s.duration(), s.name(), s.maneuver().instruction(), s.weight(), s.maneuver().location());
                             if(s.maneuver().type().equalsIgnoreCase("arrive"))
                                 if(s.maneuver().modifier() == null)
-                                    step.setDestination(true);
-                                else
                                     step.setWayPoint(true);
+                                else
+                                    step.setDestination(true);
                             mRoute.addMissionStep(step);
-                            //System.out.println(s.maneuver().type()+" , "+s.maneuver().modifier());
-                            //System.out.println(step);
                             return step;
                         }).subscribe();
                         return steps;

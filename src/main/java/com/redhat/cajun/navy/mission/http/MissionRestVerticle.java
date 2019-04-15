@@ -16,6 +16,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import rx.Observable;
 
 import java.net.HttpURLConnection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -206,10 +207,17 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     private void getAll(RoutingContext routingContext) {
 
+        Set<String> set = defaultCache.keySet();
+        Set<Mission> list = new HashSet<>(defaultCache.keySet().size());
+        set.forEach(m->{
+            list.add(missionByKey(m));
+        });
+
+
         routingContext.response()
                 .setStatusCode(201)
                 .putHeader("content-type", "application/json; charset=utf-8")
-                .end(Json.encodePrettily(defaultCache.keySet().toArray()));
+                .end(Json.encodePrettily(list));
     }
 
     private void missionByKey(RoutingContext routingContext) {

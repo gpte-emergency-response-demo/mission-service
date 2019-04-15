@@ -39,7 +39,7 @@ public class RoutePlannerTest {
         Location wPoint = new Location(29.7476, -95.3691);
         Location dest = new Location( 29.7576,-95.3591);
         MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
-        assertEquals(r.getSteps().size(), 22);
+        assertEquals(r.getSteps().size(), 23);
 
     }
 

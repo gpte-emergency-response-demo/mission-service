@@ -17,7 +17,6 @@ import rx.Observable;
 
 import java.net.HttpURLConnection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -75,6 +74,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP+"/keys").handler(this::getKeysOnly);
         router.get(MISSIONS_EP).handler(this::getAll);
+        router.get(MISSIONS_EP+"/clear").handler(this::clearAll);
         router.get(MISSIONS_EP + "/:key").handler(this::missionByKey);
 
         vertx.createHttpServer()
@@ -137,7 +137,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                         });
                 sendUpdate(m, MessageType.MissionStartedEvent);
 
-
                 break;
 
             case "UPDATE_ENTRY":
@@ -194,7 +193,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     }
 
-
     private void getKeysOnly(RoutingContext routingContext) {
 
         Set<String> m = defaultCache.keySet();
@@ -205,14 +203,22 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .end(Json.encodePrettily(m.toArray()));
     }
 
+    private void clearAll(RoutingContext routingContext){
+        defaultCache.clearAsync().whenComplete((s, t) -> {
+
+        });
+    }
+
     private void getAll(RoutingContext routingContext) {
+
 
         Set<String> set = defaultCache.keySet();
         Set<Mission> list = new HashSet<>(defaultCache.keySet().size());
-        set.forEach(m->{
-            list.add(missionByKey(m));
-        });
-
+        Observable.from(set).flatMap(s->{
+            Mission m = missionByKey(s);
+            list.add(m);
+            return Observable.just(m);
+        }).subscribe();
 
         routingContext.response()
                 .setStatusCode(201)

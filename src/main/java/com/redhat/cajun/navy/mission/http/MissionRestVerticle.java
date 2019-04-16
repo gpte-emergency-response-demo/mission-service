@@ -38,7 +38,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     public enum MessageType {
         MissionStartedEvent("MissionStartedEvent"),
         MissionPickedUpEvent("MissionPickedUpEvent"),
-        MissionCompletedEvent("MissionCompletedEvent");
+        MissionCompletedEvent("MissionCompletedEvent"),
+        UpdateResponderCommand("UpdateResponderCommand");
 
         private String messageType;
 
@@ -156,6 +157,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                     else if(responder.getStatus() == Responder.Status.DROPPED) {
                         mission.setStatus(MissionEvents.COMPLETED.getActionType());
                         sendUpdate(mission, MessageType.MissionCompletedEvent);
+                        sendUpdate(responder, MessageType.UpdateResponderCommand, true);
                     }
 
                     defaultCache.putAsync(mission.getKey(), mission.toString())
@@ -193,6 +195,23 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     }
 
+
+    private void sendUpdate(Responder responder, MessageType event, boolean available) {
+        // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
+        ResponderCommand rc = new ResponderCommand(responder, event.getMessageType());
+        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.RESPONDER_UPDATE.toString());
+
+        vertx.eventBus().send(PUB_QUEUE, rc.getResponderCommand(available), options, reply -> {
+            if (reply.succeeded()) {
+                System.out.println("Message publish request accepted");
+            } else {
+                System.err.println("Message publish request not accepted while sending update "+event);
+            }
+        });
+
+    }
+
+
     private void getKeysOnly(RoutingContext routingContext) {
 
         Set<String> m = defaultCache.keySet();
@@ -203,10 +222,32 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .end(Json.encodePrettily(m.toArray()));
     }
 
+    private void completeAll(){
+        Observable.from(defaultCache.keySet()).flatMap(s->{
+            Mission m = missionByKey(s);
+            if(!m.getStatus().equalsIgnoreCase("COMPLETED")) {
+                sendUpdate(m, MessageType.MissionCompletedEvent);
+                Responder r = new Responder();
+                r.setResponderId(m.getResponderId());
+                r.setLocation(new Location(m.getDestinationLat(), m.getDestinationLong()));
+                sendUpdate(r, MessageType.UpdateResponderCommand, true);
+            }
+            return Observable.just(m);
+        }).subscribe();
+        System.out.println("Marked all data as complete");
+    }
+
     private void clearAll(RoutingContext routingContext){
+        completeAll();
         defaultCache.clearAsync().whenComplete((s, t) -> {
 
         });
+        routingContext.response()
+                .setStatusCode(201)
+                .putHeader("content-type", "application/json; charset=utf-8")
+                .end("{\n" +
+                        "  \"result\": \"completed\"\n" +
+                        "}");
     }
 
     private void getAll(RoutingContext routingContext) {

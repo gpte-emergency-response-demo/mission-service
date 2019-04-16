@@ -3,7 +3,8 @@ package com.redhat.cajun.navy.mission;
 public enum MessageAction {
     CREATE_ENTRY ("create-entry"),
     UPDATE_ENTRY("update-entry"),
-    PUBLISH_UPDATE ("publish-update");
+    PUBLISH_UPDATE ("publish-update"),
+    RESPONDER_UPDATE ("responder-update");
 
     private String actionType;
 

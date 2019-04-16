@@ -2,7 +2,6 @@ package com.redhat.cajun.navy.mission.message;
 
 import com.redhat.cajun.navy.mission.MessageAction;
 import io.vertx.core.Future;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 

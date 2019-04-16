@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   app-config.properties: |-
-    kafka.connect=localhost:9092
+    kafka.connect=kafka-cluster-kafka-bootstrap.naps-emergency-response.svc:9092
     kafka.sub=topic-mission-command
     kafka.pub=topic-mission-event
     kafka.sub.responder.update=topic-responder-location-update
@@ -14,7 +14,7 @@ data:
     jdg.port=11222
     http.host=localhost
     http.port=8080
-    map.token=pk.eyJ1IjoibWVjaGV2YXJyaWEiLCJhIjoiY2pxbXNuMXF0MGwzNTQ5bzJwNGtyMTRqdyJ9.WZfALlPxuOveabQDrroLcQ
+    map.token=
 kind: ConfigMap
 metadata:
   name: mission-service

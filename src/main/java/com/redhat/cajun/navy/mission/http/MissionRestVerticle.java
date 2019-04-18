@@ -127,6 +127,13 @@ public class MissionRestVerticle extends CacheAccessVerticle {
             case "CREATE_ENTRY":
                 Mission m = Json.decodeValue(String.valueOf(message.body()), MissionCommand.class).getBody();
                 m.setStatus(MissionEvents.CREATED.getActionType());
+
+                // Incase the responders lat,longs are not viable
+                if(m.getResponderStartLat() == 0)
+                    m.setResponderStartLat(m.getIncidentLat());
+                if(m.getResponderStartLong() == 0)
+                    m.setResponderStartLat(m.getIncidentLong());
+
                 MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
                         new Location(m.getResponderStartLat(), m.getResponderStartLong()),
                         new Location(m.getDestinationLat(), m.getDestinationLong()),

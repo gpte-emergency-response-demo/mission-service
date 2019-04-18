@@ -42,6 +42,20 @@ public class RoutePlannerTest {
 
     }
 
+    // "responderStartLat":34.28847,"responderStartLong":-77.99952,
+    // "incidentLat":34.076286686963115,"incidentLong":-77.91920445470926,
+    // "destinationLat":34.0583,"destinationLong":-77.8885,
+    @Test
+    public void asyncMapboxDirectionsRequestHasStepsDestination() throws Exception{
+        RoutePlanner p = new RoutePlanner(MAP_TOKEN);
+        Location origin = new Location(34.28847,-77.99952);
+        Location wPoint = new Location(34.076286686963115, -77.91920445470926);
+        Location dest = new Location( 34.0583,-77.8885);
+        MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
+
+    }
+
+
     @Test
     public void asyncMapboxDirectionsRequestHasNoSteps() {
         RoutePlanner p = new RoutePlanner(MAP_TOKEN);
@@ -62,9 +76,5 @@ public class RoutePlannerTest {
         Location dest = new Location(31.0583, -77.8880 );
         MissionRoute r = p.getMapboxDirectionsRequest(origin, dest, wPoint);
     }
-
-
-
-
 
 }

@@ -111,6 +111,8 @@ public class Mission {
 
     public void addResponderLocationHistory(ResponderLocationHistory history){
         responderLocationHistory.add(history);
+        setResponderStartLat(history.getLocation().getLat());
+        setResponderStartLong(history.getLocation().getLong());
 
     }
     public String getStatus() {

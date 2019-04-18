@@ -58,9 +58,9 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     @Override
     protected void init(Future<Void> startFuture) {
-        String host = config().getString("http.host");
-        int port = config().getInteger("http.port");
-        MAPBOX_ACCESS_TOKEN = config().getString("map.token");
+        String host = config().getString("http.host", "localhost");
+        int port = config().getInteger("http.port", 8888);
+        MAPBOX_ACCESS_TOKEN = config().getString("map.token", "pk.eyJ1IjoibWVjaGV2YXJyaWEiLCJhIjoiY2pxbXNuMXF0MGwzNTQ5bzJwNGtyMTRqdyJ9.WZfALlPxuOveabQDrroLcQ");
 
 
         Router router = Router.router(vertx);
@@ -134,8 +134,9 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 defaultCache.putIfAbsentAsync(m.getKey(), m.toString())
                         .whenComplete((s, t) -> {
-
+                            message.reply(m.toString());
                         });
+
                 sendUpdate(m, MessageType.MissionStartedEvent);
 
                 break;
@@ -147,25 +148,25 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 if(mission != null) {
                     mission.addResponderLocationHistory(new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation()));
-                    System.out.println("Responder status: "+responder.getStatus());
 
                     // We are only interested in the following status for MissionEvents
                     if(responder.getStatus() == Responder.Status.PICKEDUP) {
                         mission.setStatus(MissionEvents.UPDATED.getActionType());
+                        message.reply(mission.toString());
                         sendUpdate(mission, MessageType.MissionPickedUpEvent);
                     }
                     else if(responder.getStatus() == Responder.Status.DROPPED) {
                         mission.setStatus(MissionEvents.COMPLETED.getActionType());
+                        message.reply(mission.toString());
                         sendUpdate(mission, MessageType.MissionCompletedEvent);
                         sendUpdate(responder, MessageType.UpdateResponderCommand, true);
                     }
 
                     defaultCache.putAsync(mission.getKey(), mission.toString())
                             .whenComplete((s, t) -> {
-                                message.reply(mission.toString());
+
                             });
 
-                    message.reply("Responder location updated");
                 }
                 else message.fail(ErrorCodes.BAD_ACTION.ordinal(), "Bad action: " + action +" MissionId Doest not exist");
 
@@ -186,9 +187,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
         vertx.eventBus().send(PUB_QUEUE, mc.toString(), options, reply -> {
-            if (reply.succeeded()) {
-                System.out.println("Message publish request accepted");
-            } else {
+            if (reply.failed()) {
                 System.err.println("Message publish request not accepted while sending update "+event);
             }
         });
@@ -202,9 +201,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.RESPONDER_UPDATE.toString());
 
         vertx.eventBus().send(PUB_QUEUE, rc.getResponderCommand(available), options, reply -> {
-            if (reply.succeeded()) {
-                System.out.println("Message publish request accepted");
-            } else {
+            if (reply.failed()) {
                 System.err.println("Message publish request not accepted while sending update "+event);
             }
         });
@@ -234,7 +231,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
             }
             return Observable.just(m);
         }).subscribe();
-        System.out.println("Marked all data as complete");
+        logger.info("Marked all data as complete");
     }
 
     private void clearAll(RoutingContext routingContext){

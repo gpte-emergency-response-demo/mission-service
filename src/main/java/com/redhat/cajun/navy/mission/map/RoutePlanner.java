@@ -21,6 +21,7 @@ public class RoutePlanner {
 
     private String MAPBOX_ACCESS_TOKEN = null;
 
+    private boolean hasWayPoint = false;
     public RoutePlanner(String MAPBOX_ACCESS_TOKEN) {
         this.MAPBOX_ACCESS_TOKEN = MAPBOX_ACCESS_TOKEN;
     }
@@ -51,20 +52,24 @@ public class RoutePlanner {
                 if (response.body().routes().size() > 0) {
                     DirectionsRoute route = response.body().routes().get(0);
 
-
                     mRoute.setDistance(route.distance());
                     mRoute.setDuration(route.duration());
+
                     List<RouteLeg> legs = route.legs();
 
                     Observable.from(legs).map(l -> {
                         List<LegStep> steps = l.steps();
                         Observable.from(steps).map(s -> {
                             MissionStep step = new MissionStep(s.distance(), s.duration(), s.name(), s.maneuver().instruction(), s.weight(), s.maneuver().location());
-                            if(s.maneuver().type().equalsIgnoreCase("arrive"))
-                                if(s.maneuver().modifier() == null)
+                            if (s.maneuver().type().equalsIgnoreCase("arrive")) {
+                                if (!hasWayPoint) {
                                     step.setWayPoint(true);
-                                else
+                                    hasWayPoint = true;
+                                } else
                                     step.setDestination(true);
+
+
+                            }
                             mRoute.addMissionStep(step);
                             return step;
                         }).subscribe();
@@ -76,7 +81,6 @@ public class RoutePlanner {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // System.out.println(mRoute);
         return mRoute;
     }
 

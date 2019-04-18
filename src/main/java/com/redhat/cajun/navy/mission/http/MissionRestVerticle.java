@@ -16,6 +16,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import rx.Observable;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -73,10 +74,11 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
 
         router.route().handler(BodyHandler.create());
-        router.get(MISSIONS_EP+"/keys").handler(this::getKeysOnly);
         router.get(MISSIONS_EP).handler(this::getAll);
-        router.get(MISSIONS_EP+"/clear").handler(this::clearAll);
+        router.get(MISSIONS_EP + "/keys").handler(this::getKeysOnly);
+        router.get(MISSIONS_EP + "/clear").handler(this::clearAll);
         router.get(MISSIONS_EP + "/:key").handler(this::missionByKey);
+        router.get(MISSIONS_EP + "/responders/:id").handler(this::getByResponder);
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)
@@ -262,6 +264,41 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .setStatusCode(201)
                 .putHeader("content-type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(list));
+    }
+
+    private void getByResponder(RoutingContext routingContext) {
+        String responderId = routingContext.request().getParam("id");
+        logger.info("getByResponder: responderId=" + responderId);
+
+        Mission m = responderById(responderId);
+        if (m == null) {
+            routingContext.response()
+                    .setStatusCode(HttpURLConnection.HTTP_NO_CONTENT)
+                    .end("Response:" + HttpURLConnection.HTTP_NO_CONTENT);
+        } else {
+            routingContext.response()
+                    .setStatusCode(HttpURLConnection.HTTP_CREATED)
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .end(Json.encodePrettily(m));
+        }
+
+    }
+
+    private Mission responderById(String responderId) {
+        Set<String> set = defaultCache.keySet();
+        ArrayList<Mission> list = new ArrayList<>(1);
+
+        Observable.from(set).flatMap(s -> {
+            Mission m = missionByKey(s);
+            if (m.getResponderId().equalsIgnoreCase(responderId))
+                list.add(m);
+            return Observable.just(s);
+        }).subscribe();
+
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
     }
 
     private void missionByKey(RoutingContext routingContext) {

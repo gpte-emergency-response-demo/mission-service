@@ -184,7 +184,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
         mc.createMissionCommandHeaders(event.getMessageType());
         mc.setMission(m);
 
-        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString());
+        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.PUBLISH_UPDATE.toString())
+                .addHeader("key", m.getIncidentId());
         vertx.eventBus().send(PUB_QUEUE, mc.toString(), options, reply -> {
             if (reply.succeeded()) {
                 System.out.println("Message publish request accepted");
@@ -199,7 +200,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     private void sendUpdate(Responder responder, MessageType event, boolean available) {
         // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
         ResponderCommand rc = new ResponderCommand(responder, event.getMessageType());
-        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.RESPONDER_UPDATE.toString());
+        DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.RESPONDER_UPDATE.toString())
+                .addHeader("key", responder.getResponderId());
 
         vertx.eventBus().send(PUB_QUEUE, rc.getResponderCommand(available), options, reply -> {
             if (reply.succeeded()) {

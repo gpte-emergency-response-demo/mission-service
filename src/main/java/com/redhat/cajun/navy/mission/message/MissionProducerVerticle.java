@@ -29,13 +29,14 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
 
 
         String action = message.headers().get("action");
+        String key = message.headers().get("key");
         switch (action) {
             case "PUBLISH_UPDATE":
-                sendMessage(missionUpdateCommandTopic, String.valueOf(message.body()));
+                sendMessage(missionUpdateCommandTopic, key, String.valueOf(message.body()));
                 message.reply("Message sent "+missionUpdateCommandTopic);
                 break;
             case "RESPONDER_UPDATE":
-                sendMessage(responderUpdateTopic, String.valueOf(message.body()));
+                sendMessage(responderUpdateTopic, key, String.valueOf(message.body()));
                 message.reply("Message Sent "+responderUpdateTopic);
                 break;
 
@@ -46,10 +47,10 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
     }
 
 
-    public void sendMessage(String topic, String body){
+    public void sendMessage(String topic, String key, String body){
 
         KafkaProducerRecord<String, String> record =
-                KafkaProducerRecord.create(topic, body);
+                KafkaProducerRecord.create(topic, key, body);
 
         producer.write(record, done -> {
             if (done.succeeded()) {

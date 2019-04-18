@@ -60,7 +60,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     protected void init(Future<Void> startFuture) {
         String host = config().getString("http.host", "localhost");
         int port = config().getInteger("http.port", 8888);
-        MAPBOX_ACCESS_TOKEN = config().getString("map.token", "pk.eyJ1IjoibWVjaGV2YXJyaWEiLCJhIjoiY2pxbXNuMXF0MGwzNTQ5bzJwNGtyMTRqdyJ9.WZfALlPxuOveabQDrroLcQ");
+        MAPBOX_ACCESS_TOKEN = config().getString("map.token");
 
 
         Router router = Router.router(vertx);

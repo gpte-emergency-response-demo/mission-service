@@ -1,10 +1,17 @@
 package com.redhat.cajun.navy.mission.http;
 
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
 import com.redhat.cajun.navy.mission.data.*;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.dropwizard.DropwizardExports;
+import io.prometheus.client.hotspot.MemoryPoolsExports;
+import io.prometheus.client.hotspot.StandardExports;
+import io.prometheus.client.vertx.MetricsHandler;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
@@ -55,14 +62,19 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     }
 
 
-
-
     @Override
     protected void init(Future<Void> startFuture) {
         String host = config().getString("http.host", "localhost");
         int port = config().getInteger("http.port", 8888);
         MAPBOX_ACCESS_TOKEN = config().getString("map.token");
 
+        vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
+
+        CollectorRegistry registry = CollectorRegistry.defaultRegistry;
+        MetricRegistry metricRegistry = SharedMetricRegistries.getOrCreate("exported");
+        CollectorRegistry.defaultRegistry.register(new DropwizardExports(metricRegistry));
+        new StandardExports().register(registry);
+        new MemoryPoolsExports().register(registry);
 
         Router router = Router.router(vertx);
 
@@ -70,15 +82,14 @@ public class MissionRestVerticle extends CacheAccessVerticle {
             rc.response().putHeader("content-type", "text/html")
                     .end(" Missions API Service");
         });
-
-        vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
-
+        router.get("/metrics").handler(new MetricsHandler());
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
         router.get(MISSIONS_EP + "/keys").handler(this::getKeysOnly);
         router.get(MISSIONS_EP + "/clear").handler(this::clearAll);
         router.get(MISSIONS_EP + "/:key").handler(this::missionByKey);
         router.get(MISSIONS_EP + "/responders/:id").handler(this::getByResponder);
+
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)

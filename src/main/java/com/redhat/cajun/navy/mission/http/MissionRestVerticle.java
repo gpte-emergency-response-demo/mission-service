@@ -17,10 +17,13 @@ import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.healthchecks.HealthCheckHandler;
+import io.vertx.ext.healthchecks.Status;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import rx.Observable;
+import scala.reflect.internal.Trees;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -38,8 +41,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     public static final String CACHE_QUEUE = "cache.queue";
 
     public static final String PUB_QUEUE = "pub.queue";
-
-    private static final String MAPBOX_ACCESS_TOKEN_KEY = "map.token";
 
     private String MAPBOX_ACCESS_TOKEN = null;
 
@@ -70,11 +71,11 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
 
-        CollectorRegistry registry = CollectorRegistry.defaultRegistry;
-        MetricRegistry metricRegistry = SharedMetricRegistries.getOrCreate("exported");
-        CollectorRegistry.defaultRegistry.register(new DropwizardExports(metricRegistry));
-        new StandardExports().register(registry);
-        new MemoryPoolsExports().register(registry);
+//        CollectorRegistry registry = CollectorRegistry.defaultRegistry;
+//        MetricRegistry metricRegistry = SharedMetricRegistries.getOrCreate("prometheus");
+//        new DropwizardExports(metricRegistry).register(registry);
+//        new StandardExports().register(registry);
+//        new MemoryPoolsExports().register(registry);
 
         Router router = Router.router(vertx);
 
@@ -82,13 +83,18 @@ public class MissionRestVerticle extends CacheAccessVerticle {
             rc.response().putHeader("content-type", "text/html")
                     .end(" Missions API Service");
         });
-        router.get("/metrics").handler(new MetricsHandler());
+//        router.get("/metrics").handler(new MetricsHandler());
+
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
         router.get(MISSIONS_EP + "/keys").handler(this::getKeysOnly);
         router.get(MISSIONS_EP + "/clear").handler(this::clearAll);
         router.get(MISSIONS_EP + "/:key").handler(this::missionByKey);
         router.get(MISSIONS_EP + "/responders/:id").handler(this::getByResponder);
+
+        HealthCheckHandler healthCheckHandler = HealthCheckHandler.create(vertx)
+                .register("health", f -> f.complete(Status.OK()));
+        router.get("/health").handler(healthCheckHandler);
 
 
         vertx.createHttpServer()
@@ -166,6 +172,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
 
+
+
                 if(mission != null) {
                     mission.addResponderLocationHistory(new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation()));
 
@@ -182,9 +190,11 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                         sendUpdate(responder, MessageType.UpdateResponderCommand, true);
                     }
 
+
                     defaultCache.putAsync(mission.getKey(), mission.toString())
                             .whenComplete((s, t) -> {
-
+                                message.reply(mission.toString());
+                                System.out.println(s);
                             });
 
                 }

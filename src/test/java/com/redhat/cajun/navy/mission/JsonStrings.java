@@ -11,6 +11,7 @@ public class JsonStrings {
 
     private static String MissionCommandsFile = "src/test/resources/CreateMissionCommand.json";
     private static String ResponderSimEventsFile = "src/test/resources/ResponderSim.json";
+    private static String ResponderLocationMessagesFile = "src/test/resources/ResponderLocationMessages.json";
 
     public List<String> getMissionsCommands(){
         return Collections.unmodifiableList(getMissionCommandsFromFile(MissionCommandsFile));
@@ -18,6 +19,10 @@ public class JsonStrings {
 
     public List<String> getResponderSimEvents(){
         return Collections.unmodifiableList(getMissionCommandsFromFile(ResponderSimEventsFile));
+    }
+
+    public List<String> getResponderLocationMessages(){
+        return Collections.unmodifiableList(getMissionCommandsFromFile(ResponderLocationMessagesFile));
     }
 
 

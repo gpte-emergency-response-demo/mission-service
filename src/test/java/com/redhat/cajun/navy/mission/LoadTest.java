@@ -24,7 +24,7 @@ public class LoadTest {
      * */
 
     public static void main(String args[]) throws Exception{
-        new LoadTest().testMissionResponders();
+        new LoadTest().testMission1Responders();
     }
 
 
@@ -44,7 +44,7 @@ public class LoadTest {
 
         String topicName = initProps.get("kafka.sub").toString();
 
-        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(5)));
+        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(1)));
 
 // 72d36a5f-85a3-4fd5-b2d5-1fa6abb6466254
 

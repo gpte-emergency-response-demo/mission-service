@@ -8,30 +8,19 @@ import com.redhat.cajun.navy.mission.message.ResponderLocConsumer;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Future;
+import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.micrometer.MicrometerMetricsOptions;
+import io.vertx.micrometer.VertxPrometheusOptions;
 
 
 public class MissionMain extends AbstractVerticle {
-    @Override
-    public void start(final Future<Void> future) {
 
-        ConfigRetriever.create(vertx, selectConfigOptions())
-                .getConfig(ar -> {
-                    if (ar.succeeded()) {
-                        deployVerticles(ar.result(), future);
-                    } else {
-                        System.out.println("Failed to retrieve the configuration.");
-                        future.fail(ar.cause());
-                    }
-                });
-    }
+    private static final Logger logger = LoggerFactory.getLogger(MissionMain.class.getName());
 
-
-    private ConfigRetrieverOptions selectConfigOptions(){
+    private static ConfigRetrieverOptions selectConfigOptions(){
         ConfigRetrieverOptions options = new ConfigRetrieverOptions();
 
         if (System.getenv("KUBERNETES_NAMESPACE") != null) {
@@ -48,7 +37,6 @@ public class MissionMain extends AbstractVerticle {
                     .setType("file")
                     .setFormat("properties")
                     .setConfig(new JsonObject().put("path", "local-app-config.properties"));
-            System.out.println(config());
             options.addStore(props);
         }
 
@@ -56,7 +44,7 @@ public class MissionMain extends AbstractVerticle {
     }
 
 
-    private void deployVerticles(JsonObject config, Future<Void> future){
+    private static void deployVerticles(Vertx vertx, JsonObject config, Future<Void> future){
 
         Future<String> rFuture = Future.future();
         Future<String> cFuture = Future.future();
@@ -73,25 +61,33 @@ public class MissionMain extends AbstractVerticle {
 
         CompositeFuture.all(rFuture, cFuture, pFuture).setHandler(ar -> {
             if (ar.succeeded()) {
-                System.out.println("Verticles deployed successfully.");
+                logger.info("Verticles deployed successfully.");
                 future.complete();
             } else {
-                System.out.println("WARNINIG: Verticles NOT deployed successfully.");
+                logger.error("WARNINIG: Verticles NOT deployed successfully.");
                 future.fail(ar.cause());
             }
         });
 
     }
 
-
-
-
-    // Used for debugging in IDE
+    // Entry point for the app
     public static void main(String[] args) {
-        io.vertx.reactivex.core.Vertx vertx = io.vertx.reactivex.core.Vertx.vertx();
+        io.vertx.core.Vertx vertx = io.vertx.core.Vertx.vertx(new VertxOptions().setMetricsOptions(
+                new MicrometerMetricsOptions()
+                        .setPrometheusOptions(new VertxPrometheusOptions().setEnabled(true))
+                        .setEnabled(true)));
 
-        vertx.rxDeployVerticle(MissionMain.class.getName())
-                .subscribe();
+        Future<Void> future = Future.future();
+        ConfigRetriever.create(vertx, selectConfigOptions())
+                .getConfig(ar -> {
+                    if (ar.succeeded()) {
+                        deployVerticles(vertx, ar.result(), future);
+                    } else {
+                        logger.fatal("Failed to retrieve the configuration.");
+                        future.fail(ar.cause());
+                    }
+                });
     }
 
 }

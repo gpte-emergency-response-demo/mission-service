@@ -5,11 +5,15 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import io.vertx.kafka.client.producer.RecordMetadata;
 
 public class MissionProducerVerticle extends MissionMessageVerticle {
+
+    private final Logger logger = LoggerFactory.getLogger(MissionProducerVerticle.class.getName());
 
     @Override
     public void init(Future<Void> startFuture) throws Exception {
@@ -56,7 +60,7 @@ public class MissionProducerVerticle extends MissionMessageVerticle {
             if (done.succeeded()) {
 
                 RecordMetadata recordMetadata = done.result();
-                System.out.println("Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
+                logger.info("Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
                         ", partition=" + recordMetadata.getPartition() +
                         ", offset=" + recordMetadata.getOffset());
 

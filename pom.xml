@@ -10,7 +10,7 @@
   <properties>
     <vertx.version>3.6.3.redhat-00009</vertx.version>
     <vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
-    <vertx.verticle>com.redhat.cajun.navy.mission.MissionMain</vertx.verticle>
+    <vertx.launcher>com.redhat.cajun.navy.mission.MissionMain</vertx.launcher>
     <fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
     <arquillian-cube.version>1.18.2</arquillian-cube.version>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -88,26 +88,24 @@
       <version>4.5.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-dropwizard-metrics</artifactId>
+      <artifactId>vertx-micrometer-metrics</artifactId>
+      <version>3.7.0</version>
     </dependency>
     <dependency>
-      <groupId>io.prometheus</groupId>
-      <artifactId>simpleclient_vertx</artifactId>
-      <version>${version.prometheus}</version>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-influx</artifactId>
+      <version>1.1.0</version>
     </dependency>
-    <dependency>
-      <groupId>io.prometheus</groupId>
-      <artifactId>simpleclient_dropwizard</artifactId>
-      <version>${version.prometheus}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.prometheus</groupId>
-      <artifactId>simpleclient_hotspot</artifactId>
-      <version>${version.prometheus}</version>
-    </dependency>
+
 
 
     <!-- Testing -->

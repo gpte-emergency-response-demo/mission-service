@@ -2,6 +2,8 @@ package com.redhat.cajun.navy.mission.message;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.producer.KafkaProducer;
 
@@ -9,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class MissionMessageVerticle extends AbstractVerticle {
+
+    private final Logger logger = LoggerFactory.getLogger(MissionMessageVerticle.class.getName());
 
     KafkaConsumer<String, String> consumer = null;
 

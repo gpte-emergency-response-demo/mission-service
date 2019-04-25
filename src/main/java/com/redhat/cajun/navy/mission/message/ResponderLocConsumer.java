@@ -3,9 +3,13 @@ package com.redhat.cajun.navy.mission.message;
 import com.redhat.cajun.navy.mission.MessageAction;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 
 public class ResponderLocConsumer  extends MissionMessageVerticle {
+
+    private final Logger logger = LoggerFactory.getLogger(ResponderLocConsumer.class.getName());
 
     @Override
     public void init(Future<Void> startFuture) throws Exception {
@@ -26,9 +30,9 @@ public class ResponderLocConsumer  extends MissionMessageVerticle {
 
         consumer.subscribe(responderLoctationUpdateTopic, ar -> {
             if (ar.succeeded()) {
-                System.out.println("subscribed to ResponderLocationUpdate");
+                logger.info("subscribed to ResponderLocationUpdate");
             } else {
-                System.out.println("Could not subscribe " + ar.cause().getMessage());
+                logger.fatal("Could not subscribe " + ar.cause().getMessage());
             }
         });
 
@@ -39,7 +43,7 @@ public class ResponderLocConsumer  extends MissionMessageVerticle {
         consumer.unsubscribe(ar -> {
 
             if (ar.succeeded()) {
-                System.out.println("Consumer unsubscribed");
+                logger.info("Consumer unsubscribed");
             }
         });
     }

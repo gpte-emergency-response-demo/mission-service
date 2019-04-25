@@ -17,6 +17,7 @@ public class Responder {
 
     private boolean isHuman = false;
 
+
     private boolean isContinue = true;
 
     private Location location = null;

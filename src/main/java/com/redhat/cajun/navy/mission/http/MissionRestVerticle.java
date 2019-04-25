@@ -1,17 +1,12 @@
 package com.redhat.cajun.navy.mission.http;
 
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.SharedMetricRegistries;
+
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
 import com.redhat.cajun.navy.mission.data.*;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
-import io.prometheus.client.CollectorRegistry;
-import io.prometheus.client.dropwizard.DropwizardExports;
-import io.prometheus.client.hotspot.MemoryPoolsExports;
-import io.prometheus.client.hotspot.StandardExports;
-import io.prometheus.client.vertx.MetricsHandler;
+
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
@@ -22,8 +17,9 @@ import io.vertx.ext.healthchecks.Status;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.micrometer.PrometheusScrapingHandler;
+
 import rx.Observable;
-import scala.reflect.internal.Trees;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -71,19 +67,12 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         vertx.eventBus().consumer(config().getString(CACHE_QUEUE, "cache.queue"), this::onMessage);
 
-//        CollectorRegistry registry = CollectorRegistry.defaultRegistry;
-//        MetricRegistry metricRegistry = SharedMetricRegistries.getOrCreate("prometheus");
-//        new DropwizardExports(metricRegistry).register(registry);
-//        new StandardExports().register(registry);
-//        new MemoryPoolsExports().register(registry);
 
         Router router = Router.router(vertx);
-
         router.get("/").handler(rc -> {
             rc.response().putHeader("content-type", "text/html")
                     .end(" Missions API Service");
         });
-//        router.get("/metrics").handler(new MetricsHandler());
 
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
@@ -96,9 +85,11 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .register("health", f -> f.complete(Status.OK()));
         router.get("/health").handler(healthCheckHandler);
 
+        router.route("/metrics").handler(PrometheusScrapingHandler.create());
+
 
         vertx.createHttpServer()
-                .requestHandler(router::accept)
+                .requestHandler(router)
                 .listen(port, ar -> {
                     if (ar.succeeded()) {
                         startFuture.complete();
@@ -158,9 +149,14 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 m.setRoute(mRoute);
 
-                defaultCache.putIfAbsentAsync(m.getKey(), m.toString())
+                defaultCache.putAsync(m.getKey(), m.toString())
                         .whenComplete((s, t) -> {
-                            message.reply(m.toString());
+                            if(t==null) {
+                                message.reply(m.toString());
+                            }
+                            else {
+                                message.fail(ErrorCodes.BAD_ACTION.ordinal(), "Bad action: " + action + " Unable to update mission");
+                            }
                         });
 
                 sendUpdate(m, MessageType.MissionStartedEvent);
@@ -172,31 +168,23 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
                 Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
 
-
-
                 if(mission != null) {
-                    mission.addResponderLocationHistory(new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation()));
+                    ResponderLocationHistory history = new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation());
+                    mission.addResponderLocationHistory(history);
 
                     // We are only interested in the following status for MissionEvents
                     if(responder.getStatus() == Responder.Status.PICKEDUP) {
                         mission.setStatus(MissionEvents.UPDATED.getActionType());
-                        message.reply(mission.toString());
                         sendUpdate(mission, MessageType.MissionPickedUpEvent);
                     }
                     else if(responder.getStatus() == Responder.Status.DROPPED) {
                         mission.setStatus(MissionEvents.COMPLETED.getActionType());
-                        message.reply(mission.toString());
                         sendUpdate(mission, MessageType.MissionCompletedEvent);
                         sendUpdate(responder, MessageType.UpdateResponderCommand, true);
                     }
-
-
-                    defaultCache.putAsync(mission.getKey(), mission.toString())
-                            .whenComplete((s, t) -> {
-                                message.reply(mission.toString());
-                                System.out.println(s);
-                            });
-
+                    // removed async all, since cache update was ambiguous
+                    defaultCache.put(mission.getKey(), mission.toString());
+                    message.reply(mission.toString());
                 }
                 else message.fail(ErrorCodes.BAD_ACTION.ordinal(), "Bad action: " + action +" MissionId Doest not exist");
 

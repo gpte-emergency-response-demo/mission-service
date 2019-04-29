@@ -1,63 +1,117 @@
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <title>Vert.x HTTP Booster</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mission Control</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
-
 <body>
 
-<div class="container">
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<style>
+    .select,
+    #locale {
+        width: 100%;
+    }
+    .like {
+        margin-right: 10px;
+    }
+</style>
 
-    <div>
-        <div class="sect1">
-<h2 id="_http_booster">HTTP Booster</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>An example of simple mapping of a business operation to a remote endpoint. By taking this approach, clients use the HTTP protocol as a transport mechanism to call services. Application engineers define the APIs using a broad interpretation of the REST fundamentals, encouraging freedom in design and quick prototyping.</p>
-</div>
-<div class="sect2">
-<h3 id="_using_the_greeting_service">Using the greeting service</h3>
-
-</div>
-</div>
-</div>
-        
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="World">
-            </div>
-            <button id="invoke" type="submit" class="btn btn-success">Invoke</button>
-        </form>
-
-        <h3>Result:</h3>
-        <pre><code id="greeting-result">Invoke the service to see the result.</code></pre>
-    </div>
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+<table
+        id="table"
+        data-toggle="table"
+        data-url="/api/missions"
+        data-search="true"
+        data-toolbar="#toolbar"
+        data-show-refresh="true"
+        data-show-toggle="true"
+        data-show-fullscreen="true"
+        data-show-columns="true"
+        data-detail-view="true"
+        data-show-export="true"
+        data-detail-formatter="detailFormatter"
+        data-minimum-count-columns="2"
+        data-show-pagination-switch="true"
+        data-pagination="true"
+        data-id-field="id"
+        data-page-list="[10, 25, 50, 100, ALL]"
+        data-show-footer="true">
+    <thead>
+    <tr>
+        <th data-field="id">ID</th>
+        <th data-field="incidentId">IncidentId</th>
+        <th data-field="responderId">ResponderId</th>
+        <th data-field="status">Status</th>
+    </tr>
+    </thead>
+</table>
 
 <script>
-    $(document).ready(function() {
-       $("#invoke").click(function(e) {
-          var n = $("#name").val() || "World";
-          $.getJSON("/api/greeting?name=" + n, function(res) {
-              $("#greeting-result").text(JSON.stringify(res));
-          });
-          e.preventDefault();
-       });
-    });
+    var $table = $('#table')
+
+    function buildTable($el, cells, rows) {
+        var i; var j; var row
+        var columns = []
+        var data = []
+
+        for (i = 0; i < cells; i++) {
+            columns.push({
+                field: 'field' + i,
+                title: 'Cell' + i,
+                sortable: true
+            })
+        }
+        for (i = 0; i < rows; i++) {
+            row = {}
+            for (j = 0; j < cells; j++) {
+                row['field' + j] = 'Row-' + i + '-' + j
+            }
+            data.push(row)
+        }
+        $el.bootstrapTable({
+            columns: columns,
+            data: data,
+            detailView: cells > 1,
+            onExpandRow: function (index, row, $detail) {
+                /* eslint no-use-before-define: ["error", { "functions": false }]*/
+                expandTable($detail, cells - 1)
+            }
+        })
+    }
+
+    function expandTable($detail, cells) {
+        buildTable($detail.html('<table></table>').find('table'), cells, 1)
+    }
+
+    $(function() {
+        buildTable($table, 8, 1)
+    })
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+        })
+        return html.join('')
+    }
+
+
 </script>
-
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 </body>
-
 </html>
+
+
+
+
+

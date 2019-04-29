@@ -17,6 +17,7 @@ import io.vertx.ext.healthchecks.Status;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.micrometer.PrometheusScrapingHandler;
 
 import rx.Observable;
@@ -74,6 +75,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                     .end(" Missions API Service");
         });
 
+        router.get("/m/console").handler(StaticHandler.create());
         router.route().handler(BodyHandler.create());
         router.get(MISSIONS_EP).handler(this::getAll);
         router.get(MISSIONS_EP + "/keys").handler(this::getKeysOnly);

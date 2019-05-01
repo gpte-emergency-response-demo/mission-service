@@ -1,8 +1,7 @@
 package com.redhat.cajun.navy.mission.message;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import com.redhat.cajun.navy.mission.ErrorCodes;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -11,18 +10,32 @@ import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import io.vertx.kafka.client.producer.RecordMetadata;
 
-public class MissionProducerVerticle extends MissionMessageVerticle {
+import java.util.HashMap;
+import java.util.Map;
+
+public class MissionProducerVerticle extends AbstractVerticle {
 
     private final Logger logger = LoggerFactory.getLogger(MissionProducerVerticle.class.getName());
+    private Map<String, String> config = new HashMap<>();
+    KafkaProducer<String,String> producer = null;
+    public static final String PUB_QUEUE = "pub.queue";
+
+    public String missionUpdateCommandTopic = null;
+    public String responderUpdateTopic = null;
+
 
     @Override
-    public void init(Future<Void> startFuture) throws Exception {
+    public void start() throws Exception {
 
+        config.put("bootstrap.servers", config().getString("kafka.connect", "localhost:9092"));
+        config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        missionUpdateCommandTopic = config().getString("kafka.pub");
+        responderUpdateTopic = config().getString("kafka.pub.responder.update");
         producer = KafkaProducer.create(vertx,config);
-        vertx.eventBus().consumer(config().getString(PUB_QUEUE, "pub.queue"), this::onMessage);
-
+        vertx.eventBus().consumer(PUB_QUEUE, this::onMessage);
     }
-
 
     public void onMessage(Message<JsonObject> message) {
 

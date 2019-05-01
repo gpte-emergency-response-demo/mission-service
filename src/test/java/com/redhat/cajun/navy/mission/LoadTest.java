@@ -24,7 +24,7 @@ public class LoadTest {
      * */
 
     public static void main(String args[]) throws Exception{
-        new LoadTest().testMission1Responders();
+        new LoadTest().testMissionResponders();
     }
 
 

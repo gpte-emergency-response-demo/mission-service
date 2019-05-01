@@ -1,8 +1,9 @@
 package com.redhat.cajun.navy.mission.http;
 
-
-
+import com.redhat.cajun.navy.mission.ErrorCodes;
 import com.redhat.cajun.navy.mission.MessageAction;
+import com.redhat.cajun.navy.mission.MessageType;
+import com.redhat.cajun.navy.mission.MissionEvents;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
 import com.redhat.cajun.navy.mission.data.*;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
@@ -40,24 +41,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
     public static final String PUB_QUEUE = "pub.queue";
 
     private String MAPBOX_ACCESS_TOKEN = null;
-
-    public enum MessageType {
-        MissionStartedEvent("MissionStartedEvent"),
-        MissionPickedUpEvent("MissionPickedUpEvent"),
-        MissionCompletedEvent("MissionCompletedEvent"),
-        UpdateResponderCommand("UpdateResponderCommand");
-
-        private String messageType;
-
-        MessageType(String messageType) {
-            this.messageType = messageType;
-        }
-
-        public String getMessageType() {
-            return messageType;
-        }
-
-    }
 
 
     @Override
@@ -101,29 +84,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 });
     }
 
-    public enum ErrorCodes {
-        NO_ACTION_SPECIFIED,
-        BAD_ACTION
-    }
 
-    public enum MissionEvents {
-        CREATED("CREATED"),
-        UPDATED("UPDATED"),
-        COMPLETED("COMPLETED"),
-        FAILED("FAILED");
-
-
-        private String actionType;
-
-        MissionEvents(String actionType) {
-            this.actionType = actionType;
-        }
-
-        public String getActionType() {
-            return actionType;
-        }
-
-    }
 
     public void onMessage(Message<JsonObject> message) {
 
@@ -200,7 +161,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
 
     private void sendUpdate(Mission m, MessageType event) {
-        // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
         MissionCommand mc = new MissionCommand();
         mc.createMissionCommandHeaders(event.getMessageType());
         mc.setMission(m);
@@ -217,10 +177,9 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
 
     private void sendUpdate(Responder responder, MessageType event, boolean available) {
-        // Possible issue here, since DG might not be updated and this message is publised for Mission Created.
         ResponderCommand rc = new ResponderCommand(responder, event.getMessageType());
         DeliveryOptions options = new DeliveryOptions().addHeader("action", MessageAction.RESPONDER_UPDATE.toString())
-                .addHeader("key", responder.getResponderId());
+                .addHeader("key", responder.getIncidentId());
 
         vertx.eventBus().send(PUB_QUEUE, rc.getResponderCommand(available), options, reply -> {
             if (reply.failed()) {
@@ -271,7 +230,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
     private void getAll(RoutingContext routingContext) {
 
-
         Set<String> set = defaultCache.keySet();
         Set<Mission> list = new HashSet<>(defaultCache.keySet().size());
         Observable.from(set).flatMap(s->{
@@ -310,8 +268,12 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
         Observable.from(set).flatMap(s -> {
             Mission m = missionByKey(s);
-            if (m.getResponderId().equalsIgnoreCase(responderId))
-                list.add(m);
+            if (m.getResponderId().equalsIgnoreCase(responderId)) {
+                if (((m.getStatus().equalsIgnoreCase("UPDATED")
+                        || (m.getStatus().equalsIgnoreCase("CREATED"))))) {
+                    list.add(m);
+                }
+            }
             return Observable.just(s);
         }).subscribe();
 
@@ -335,15 +297,15 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                     .setStatusCode(responseCode)
                     .end("Response:"+HttpURLConnection.HTTP_NO_CONTENT);
         } else {
-           routingContext.response()
-               .setStatusCode(responseCode)
-               .putHeader("content-type", "application/json; charset=utf-8")
-               .end(Json.encodePrettily(m));
+            routingContext.response()
+                    .setStatusCode(responseCode)
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .end(Json.encodePrettily(m));
         }
     }
 
     private Mission missionByKey(String m){
-       String val = defaultCache.get(m);
+        String val = defaultCache.get(m);
         if(val != null)
             return Json.decodeValue(val, Mission.class);
         else return null;

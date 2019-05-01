@@ -3,6 +3,7 @@ package com.redhat.cajun.navy.mission.http;
 import com.redhat.cajun.navy.mission.DeployOptions;
 import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.JsonStrings;
+import com.redhat.cajun.navy.mission.MissionEvents;
 import com.redhat.cajun.navy.mission.data.Mission;
 import com.redhat.cajun.navy.mission.data.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Responder;
@@ -95,7 +96,7 @@ public class MissionRestVerticleTest {
         eb.send(CACHE_QUEUE, r.toString(), options, reply ->{
             context.assertEquals(true, reply.succeeded());
             Mission m = Json.decodeValue(String.valueOf(reply.result().body()), Mission.class);
-            context.assertEquals(MissionRestVerticle.MissionEvents.UPDATED.getActionType(), m.getStatus());
+            context.assertEquals(MissionEvents.UPDATED.getActionType(), m.getStatus());
 
         });
 
@@ -125,7 +126,7 @@ public class MissionRestVerticleTest {
         eb.send(CACHE_QUEUE, r.toString(), options, reply ->{
             context.assertEquals(true, reply.succeeded());
             Mission m = Json.decodeValue(String.valueOf(reply.result().body()), Mission.class);
-            context.assertEquals(MissionRestVerticle.MissionEvents.COMPLETED.getActionType(), m.getStatus());
+            context.assertEquals(MissionEvents.COMPLETED.getActionType(), m.getStatus());
 
         });
 

@@ -78,6 +78,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 .listen(port, ar -> {
                     if (ar.succeeded()) {
                         startFuture.complete();
+                        logger.info("Http Server Listening on: "+port);
                     } else {
                         startFuture.fail(ar.cause());
                     }
@@ -207,6 +208,7 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 sendUpdate(m, MessageType.MissionCompletedEvent);
                 Responder r = new Responder();
                 r.setResponderId(m.getResponderId());
+                r.setIncidentId(m.getIncidentId());
                 r.setLocation(new Location(m.getDestinationLat(), m.getDestinationLong()));
                 sendUpdate(r, MessageType.UpdateResponderCommand, true);
             }

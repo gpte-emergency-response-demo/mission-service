@@ -24,11 +24,39 @@ public class LoadTest {
      * */
 
     public static void main(String args[]) throws Exception{
-        new LoadTest().testMissionResponders();
+        //testMissionResponders();
+        //testMissionsWithSameResponders();
+        testMission1Responders();
+       // test2Missions1Responder();
     }
 
 
-    public void testMission1Responders() throws Exception{
+    public static void test2Missions1Responder() throws Exception {
+        Properties initProps = new Properties();
+        String MissionCommandsFile = "src/test/resources/CreateMissionCommand.json";
+        initProps.load(new FileInputStream(new File("src/main/resources/local-app-config.properties")));
+
+        Properties props = new Properties();
+
+        props.put("bootstrap.servers", initProps.getProperty("kafka.connect", "localhost:9092"));
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+
+        Producer<String, String> producer = new KafkaProducer<String, String>(props);
+
+        String topicName = initProps.get("kafka.sub").toString();
+
+        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(0)));
+        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(1)));
+
+
+        producer.close();
+
+
+    }
+
+    public static void testMission1Responders() throws Exception{
         Properties initProps = new Properties();
         String MissionCommandsFile = "src/test/resources/CreateMissionCommand.json";
         initProps.load(new FileInputStream(new File("src/main/resources/local-app-config.properties")));
@@ -52,11 +80,10 @@ public class LoadTest {
     }
 
 
-
-    public void testMissionResponders() throws Exception{
+    public static void testMissionResponders() throws Exception{
 
         Properties initProps = new Properties();
-        String MissionCommandsFile = "src/test/resources/CreateMissionCommand.json";
+
         initProps.load(new FileInputStream(new File("src/main/resources/local-app-config.properties")));
 
         Properties props = new Properties();
@@ -69,7 +96,7 @@ public class LoadTest {
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
 
         String topicName = initProps.get("kafka.sub").toString();
-        Observable.from(getMissionCommandsFromFile(MissionCommandsFile)).flatMap(entry->{
+        Observable.from(JsonStrings.getMissionsCommands()).concatMap(entry->{
             producer.send(new ProducerRecord<String, String>(topicName, entry));
             return Observable.just(entry);
         }).doOnError(System.out::println).subscribe();
@@ -78,7 +105,32 @@ public class LoadTest {
     }
 
 
-    private List<String> getMissionCommandsFromFile(String fileName) {
+
+    public static void testMissionsWithSameResponders() throws Exception{
+
+        Properties initProps = new Properties();
+        initProps.load(new FileInputStream(new File("src/main/resources/local-app-config.properties")));
+
+        Properties props = new Properties();
+
+        props.put("bootstrap.servers", initProps.getProperty("kafka.connect", "localhost:9092"));
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+
+        Producer<String, String> producer = new KafkaProducer<String, String>(props);
+
+        String topicName = initProps.get("kafka.sub").toString();
+        Observable.from(JsonStrings.getMissionsCommandWithSameResponders()).flatMap(entry->{
+            producer.send(new ProducerRecord<String, String>(topicName, entry));
+            return Observable.just(entry);
+        }).doOnError(System.out::println).subscribe();
+
+        producer.close();
+    }
+
+
+    private static List<String> getMissionCommandsFromFile(String fileName) {
         List<String> list = new ArrayList<>();
         int count = 1;
         try {

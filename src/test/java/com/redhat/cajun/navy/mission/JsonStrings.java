@@ -12,21 +12,25 @@ public class JsonStrings {
     private static String MissionCommandsFile = "src/test/resources/CreateMissionCommand.json";
     private static String ResponderSimEventsFile = "src/test/resources/ResponderSim.json";
     private static String ResponderLocationMessagesFile = "src/test/resources/ResponderLocationMessages.json";
+    private static String MissionsCommandWithSameResponders = "src/test/resources/CreateMissionCommandSameResponders.json";
 
-    public List<String> getMissionsCommands(){
+    public static List<String> getMissionsCommands(){
         return Collections.unmodifiableList(getMissionCommandsFromFile(MissionCommandsFile));
     }
 
-    public List<String> getResponderSimEvents(){
+    public static List<String> getResponderSimEvents(){
         return Collections.unmodifiableList(getMissionCommandsFromFile(ResponderSimEventsFile));
     }
 
-    public List<String> getResponderLocationMessages(){
+    public static List<String> getResponderLocationMessages(){
         return Collections.unmodifiableList(getMissionCommandsFromFile(ResponderLocationMessagesFile));
     }
 
+    public static List<String> getMissionsCommandWithSameResponders(){
+        return Collections.unmodifiableList(getMissionCommandsFromFile(MissionsCommandWithSameResponders));
+    }
 
-    private List<String> getMissionCommandsFromFile(String fileName) {
+    private static List<String> getMissionCommandsFromFile(String fileName) {
         List<String> list = new ArrayList<>();
         try {
             try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {

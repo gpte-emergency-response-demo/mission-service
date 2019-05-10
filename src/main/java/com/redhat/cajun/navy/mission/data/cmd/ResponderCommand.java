@@ -1,7 +1,11 @@
-package com.redhat.cajun.navy.mission.data;
+package com.redhat.cajun.navy.mission.data.cmd;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.redhat.cajun.navy.mission.data.Responder;
 
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponderCommand {
     private String id;
     private String messageType;
@@ -25,8 +29,8 @@ public class ResponderCommand {
                 "\"invokingService\": \""+invokingService+"\", " +
                 "\"timestamp\": "+timestamp+", " +
                 "\"body\": { \"responder\": { \"id\": "+responder.getResponderId()+", " +
-                "\"latitude\": "+responder.getLocation().getLat()+", " +
-                "\"longitude\": "+responder.getLocation().getLong()+", " +
+                "\"latitude\": "+responder.getLat()+", " +
+                "\"longitude\": "+responder.getLon()+", " +
                 "\"available\": "+available+" } } }";
     }
 

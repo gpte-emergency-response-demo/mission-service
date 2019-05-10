@@ -1,6 +1,7 @@
 package com.redhat.cajun.navy.mission.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.vertx.core.json.Json;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Mission {
     private String id;
     private String incidentId;
@@ -22,11 +23,27 @@ public class Mission {
     private List<ResponderLocationHistory> responderLocationHistory;
     private String status;
 
-    private MissionRoute route = null;
+    public void setSteps(List<MissionStep> steps) {
+        this.steps = steps;
+    }
+
+    private List<MissionStep> steps = null;
 
     public Mission(){
         id = UUID.randomUUID().toString();
         responderLocationHistory = new ArrayList<>();
+        steps = new ArrayList<MissionStep>();
+    }
+
+    public void addMissionStep(MissionStep step){
+        if(this.steps != null && step != null){
+            steps.add(step);
+        }
+        else throw new IllegalArgumentException("Null value not acceptable");
+    }
+
+    public List<MissionStep> getSteps() {
+        return steps;
     }
 
     public String getId() {
@@ -111,8 +128,8 @@ public class Mission {
 
     public void addResponderLocationHistory(ResponderLocationHistory history){
         responderLocationHistory.add(history);
-        setResponderStartLat(history.getLocation().getLat());
-        setResponderStartLong(history.getLocation().getLong());
+        setResponderStartLat(history.getLat());
+        setResponderStartLong(history.getLon());
 
     }
     public String getStatus() {
@@ -123,14 +140,6 @@ public class Mission {
         this.status = input;
     }
 
-
-    public MissionRoute getRoute() {
-        return route;
-    }
-
-    public void setRoute(MissionRoute route) {
-        this.route = route;
-    }
 
     public String toJson() {
         return Json.encode(this);

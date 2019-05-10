@@ -6,6 +6,8 @@ import com.redhat.cajun.navy.mission.MessageType;
 import com.redhat.cajun.navy.mission.MissionEvents;
 import com.redhat.cajun.navy.mission.cache.CacheAccessVerticle;
 import com.redhat.cajun.navy.mission.data.*;
+import com.redhat.cajun.navy.mission.data.cmd.MissionCommand;
+import com.redhat.cajun.navy.mission.data.cmd.ResponderCommand;
 import com.redhat.cajun.navy.mission.map.RoutePlanner;
 
 import io.vertx.core.Future;
@@ -26,6 +28,7 @@ import rx.Observable;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -106,12 +109,12 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 if(m.getResponderStartLong() == 0)
                     m.setResponderStartLat(m.getIncidentLong());
 
-                MissionRoute mRoute = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
+                List<MissionStep> steps = new RoutePlanner(MAPBOX_ACCESS_TOKEN).getMapboxDirectionsRequest(
                         new Location(m.getResponderStartLat(), m.getResponderStartLong()),
                         new Location(m.getDestinationLat(), m.getDestinationLong()),
                         new Location(m.getIncidentLat(), m.getIncidentLong()));
 
-                m.setRoute(mRoute);
+                m.setSteps(steps);
 
                 defaultCache.putAsync(m.getKey(), m.toString())
                         .whenComplete((s, t) -> {
@@ -129,11 +132,11 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
             case "UPDATE_ENTRY":
                 Responder responder = Json.decodeValue(String.valueOf(message.body()), Responder.class);
-
+                System.out.println(responder);
                 Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
 
                 if(mission != null) {
-                    ResponderLocationHistory history = new ResponderLocationHistory(System.currentTimeMillis(), responder.getLocation());
+                    ResponderLocationHistory history = new ResponderLocationHistory(System.currentTimeMillis(), responder.getLat(), responder.getLon());
                     mission.addResponderLocationHistory(history);
 
                     // We are only interested in the following status for MissionEvents
@@ -209,7 +212,8 @@ public class MissionRestVerticle extends CacheAccessVerticle {
                 Responder r = new Responder();
                 r.setResponderId(m.getResponderId());
                 r.setIncidentId(m.getIncidentId());
-                r.setLocation(new Location(m.getDestinationLat(), m.getDestinationLong()));
+                r.setLat(m.getDestinationLat());
+                r.setLon(m.getDestinationLong());
                 sendUpdate(r, MessageType.UpdateResponderCommand, true);
             }
             return Observable.just(m);

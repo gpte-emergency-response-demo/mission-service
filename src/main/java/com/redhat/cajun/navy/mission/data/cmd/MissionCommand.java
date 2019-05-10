@@ -1,10 +1,13 @@
-package com.redhat.cajun.navy.mission.data;
+package com.redhat.cajun.navy.mission.data.cmd;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.redhat.cajun.navy.mission.data.Mission;
 import io.vertx.core.json.Json;
 
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MissionCommand {
 
     private String id;

@@ -19,7 +19,8 @@ public class Responder {
 
     private boolean isContinue = true;
 
-    private Location location = null;
+    private double lat;
+    private double lon;
 
     private Status status = Status.RECEIVED;
 
@@ -48,6 +49,23 @@ public class Responder {
 
     public Responder() {
 
+    }
+
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double input) {
+        this.lat = input;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double input) {
+        this.lon = input;
     }
 
 
@@ -91,16 +109,6 @@ public class Responder {
 
     public void setResponderId(String responderId) {
         this.responderId = responderId;
-    }
-
-
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public Location getLocation() {
-        return this.location;
     }
 
     public boolean isHuman() {

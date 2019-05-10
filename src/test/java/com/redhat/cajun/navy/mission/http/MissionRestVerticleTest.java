@@ -5,7 +5,7 @@ import com.redhat.cajun.navy.mission.MessageAction;
 import com.redhat.cajun.navy.mission.JsonStrings;
 import com.redhat.cajun.navy.mission.MissionEvents;
 import com.redhat.cajun.navy.mission.data.Mission;
-import com.redhat.cajun.navy.mission.data.MissionCommand;
+import com.redhat.cajun.navy.mission.data.cmd.MissionCommand;
 import com.redhat.cajun.navy.mission.data.Responder;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.DeliveryOptions;

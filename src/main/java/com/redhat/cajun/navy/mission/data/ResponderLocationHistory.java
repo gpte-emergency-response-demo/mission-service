@@ -1,31 +1,39 @@
 package com.redhat.cajun.navy.mission.data;
 
-public class ResponderLocationHistory extends Location{
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ResponderLocationHistory{
 
     private long timestamp;
-
-    private Location location = null;
-
-    public ResponderLocationHistory(Location location, int timestamp) {
-        this.timestamp = timestamp;
-        this.location = location;
-    }
+    private double lat;
+    private double lon;
 
     public ResponderLocationHistory() {
 
     }
 
-    public ResponderLocationHistory(long timestamp, Location location) {
+    public ResponderLocationHistory(long timestamp, double lat, double lon) {
         this.timestamp = timestamp;
-        this.location = location;
+        this.lat = lat;
+        this.lon = lon;
+
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLat(double input) {
+        this.lat = input;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double input) {
+        this.lon = input;
     }
 
     public long getTimestamp() {

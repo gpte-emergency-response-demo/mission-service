@@ -8,12 +8,12 @@ import com.mapbox.api.directions.v5.models.LegStep;
 import com.mapbox.api.directions.v5.models.RouteLeg;
 import com.mapbox.geojson.Point;
 import com.redhat.cajun.navy.mission.data.Location;
-import com.redhat.cajun.navy.mission.data.MissionRoute;
 import com.redhat.cajun.navy.mission.data.MissionStep;
 import retrofit2.Response;
 import rx.Observable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +26,7 @@ public class RoutePlanner {
         this.MAPBOX_ACCESS_TOKEN = MAPBOX_ACCESS_TOKEN;
     }
 
-    public MissionRoute getMapboxDirectionsRequest(Location origin, Location destination, Location waypoint) {
+    public List<MissionStep> getMapboxDirectionsRequest(Location origin, Location destination, Location waypoint) {
 
         MapboxDirections request = MapboxDirections.builder()
                 .accessToken(MAPBOX_ACCESS_TOKEN)
@@ -37,8 +37,7 @@ public class RoutePlanner {
                 .profile(DirectionsCriteria.PROFILE_DRIVING)
                 .steps(true)
                 .build();
-
-        MissionRoute mRoute = new MissionRoute();
+        List<MissionStep> missionSteps = new ArrayList<>();
         try {
 
             Response<DirectionsResponse> response = request.executeCall();
@@ -52,15 +51,12 @@ public class RoutePlanner {
                 if (response.body().routes().size() > 0) {
                     DirectionsRoute route = response.body().routes().get(0);
 
-                    mRoute.setDistance(route.distance());
-                    mRoute.setDuration(route.duration());
-
                     List<RouteLeg> legs = route.legs();
 
                     Observable.from(legs).map(l -> {
                         List<LegStep> steps = l.steps();
                         Observable.from(steps).map(s -> {
-                            MissionStep step = new MissionStep(s.distance(), s.duration(), s.name(), s.maneuver().instruction(), s.weight(), s.maneuver().location());
+                            MissionStep step = new MissionStep(s.maneuver().location());
                             if (s.maneuver().type().equalsIgnoreCase("arrive")) {
                                 if (!hasWayPoint) {
                                     step.setWayPoint(true);
@@ -70,7 +66,7 @@ public class RoutePlanner {
 
 
                             }
-                            mRoute.addMissionStep(step);
+                            missionSteps.add(step);
                             return step;
                         }).subscribe();
                         return steps;
@@ -81,7 +77,7 @@ public class RoutePlanner {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return mRoute;
+        return missionSteps;
     }
 
 }

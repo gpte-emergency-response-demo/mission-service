@@ -1,13 +1,22 @@
 package com.redhat.cajun.navy.mission.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.redhat.cajun.navy.mission.util.DoubleContextualSerializer;
+import com.redhat.cajun.navy.mission.util.Precision;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponderLocationHistory{
 
     private long timestamp;
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lon;
+
 
     public ResponderLocationHistory() {
 

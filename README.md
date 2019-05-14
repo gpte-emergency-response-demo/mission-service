@@ -1,4 +1,4 @@
-Emergency response Mission Service [![Build Status](https://travis-ci.org/NAPS-emergency-response-project/mission-service.svg?branch=master)](https://travis-ci.org/NAPS-emergency-response-project/mission-service)
+Emergency response Mission Service 
 =========
 
 Pre-requisites: Running Kafka Cluster, JDG Service, Configmap

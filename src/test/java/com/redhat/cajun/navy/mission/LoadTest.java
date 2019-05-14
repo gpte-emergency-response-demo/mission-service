@@ -24,10 +24,10 @@ public class LoadTest {
      * */
 
     public static void main(String args[]) throws Exception{
-        //testMissionResponders();
-        //testMissionsWithSameResponders();
+ //         testMissionResponders();
+//        testMissionsWithSameResponders();
         testMission1Responders();
-       // test2Missions1Responder();
+//        test2Missions1Responder();
     }
 
 
@@ -72,7 +72,7 @@ public class LoadTest {
 
         String topicName = initProps.get("kafka.sub").toString();
 
-        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(1)));
+        producer.send(new ProducerRecord<String, String>(topicName, getMissionCommandsFromFile(MissionCommandsFile).get(0)));
 
 // 72d36a5f-85a3-4fd5-b2d5-1fa6abb6466254
 

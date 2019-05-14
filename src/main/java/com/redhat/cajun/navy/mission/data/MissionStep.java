@@ -1,13 +1,21 @@
 package com.redhat.cajun.navy.mission.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mapbox.geojson.Point;
+import com.redhat.cajun.navy.mission.util.DoubleContextualSerializer;
+import com.redhat.cajun.navy.mission.util.Precision;
 import io.vertx.core.json.Json;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MissionStep {
 
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lon;
 
     private boolean isWayPoint = false;

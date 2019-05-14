@@ -1,6 +1,9 @@
 package com.redhat.cajun.navy.mission.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.redhat.cajun.navy.mission.util.DoubleContextualSerializer;
+import com.redhat.cajun.navy.mission.util.Precision;
 import io.vertx.core.json.Json;
 
 import java.util.Objects;
@@ -19,8 +22,14 @@ public class Responder {
 
     private boolean isContinue = true;
 
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double lon;
+
 
     private Status status = Status.RECEIVED;
 

@@ -132,7 +132,6 @@ public class MissionRestVerticle extends CacheAccessVerticle {
 
             case "UPDATE_ENTRY":
                 Responder responder = Json.decodeValue(String.valueOf(message.body()), Responder.class);
-                System.out.println(responder);
                 Mission mission = missionByKey(responder.getIncidentId()+responder.getResponderId());
 
                 if(mission != null) {

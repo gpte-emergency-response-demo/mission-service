@@ -2,6 +2,9 @@ package com.redhat.cajun.navy.mission.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.redhat.cajun.navy.mission.util.DoubleContextualSerializer;
+import com.redhat.cajun.navy.mission.util.Precision;
 import io.vertx.core.json.Json;
 
 import java.util.ArrayList;
@@ -14,12 +17,31 @@ public class Mission {
     private String id;
     private String incidentId;
     private String responderId;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double responderStartLat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double responderStartLong;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double incidentLat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double incidentLong;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double destinationLat;
+
+    @JsonSerialize(using = DoubleContextualSerializer.class)
+    @Precision(precision = 4)
     private double destinationLong;
+
     private List<ResponderLocationHistory> responderLocationHistory;
     private String status;
 
